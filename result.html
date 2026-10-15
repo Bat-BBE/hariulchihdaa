@@ -21,6 +21,9 @@
   ::-webkit-scrollbar{display:none;}
   .screen{display:none;}
   .screen.active{display:flex;}
+  @keyframes scorePop{0%{transform:scale(1);}45%{transform:scale(1.18);}100%{transform:scale(1);}}
+  .score-pop{animation:scorePop .42s cubic-bezier(.3,1.5,.4,1) both;}
+  @media (prefers-reduced-motion: reduce){ .score-pop{animation:none!important;} }
 </style>
 </head>
 <body class="bg-surface font-body text-on-surface flex flex-col min-h-screen">
@@ -50,14 +53,28 @@
 
   <section class="screen flex-col gap-space-lg pt-2" id="screen-result">
     <!-- Score hero -->
-    <div class="relative w-full rounded-lg bg-surface-container-low p-space-lg overflow-hidden shadow-card flex flex-col items-center text-center gap-2">
-      <div class="absolute -top-16 -right-16 w-56 h-56 rounded-full bg-primary-fixed/15 blur-3xl pointer-events-none"></div>
-      <img id="result-avatar" src="" alt="" class="w-20 h-20 rounded-full object-cover object-top shadow-md relative z-10 -mt-2" />
-      <p class="relative z-10 font-label-lg text-label-lg text-on-surface" id="result-nickname">Нэргүй найз</p>
-      <h1 class="relative z-10 font-display text-display-mobile text-on-surface" id="result-score">8/10</h1>
-      <p class="relative z-10 font-body text-body-lg text-primary-fixed font-extrabold" id="result-message">Маш сайн!</p>
-      <p class="relative z-10 font-body text-body-sm text-on-surface-variant" id="result-quiz-title">Тестийн нэр</p>
-      <img id="celebrate-gif" src="" alt="" class="relative z-10 mt-2 w-40 h-40 object-contain hidden" />
+    <div class="relative w-full rounded-lg bg-surface-container-low p-space-lg overflow-hidden shadow-card flex flex-col items-center text-center gap-1.5">
+      <div class="absolute -top-20 -right-20 w-56 h-56 rounded-full bg-primary-fixed/15 blur-3xl pointer-events-none"></div>
+      <div class="absolute -bottom-16 -left-16 w-48 h-48 rounded-full bg-secondary-container/25 blur-3xl pointer-events-none"></div>
+
+      <img id="celebrate-gif" src="" alt="" class="hidden absolute top-3 right-3 z-20 w-14 h-14 rounded-full object-cover shadow-card ring-2 ring-surface-container-low" />
+
+      <span class="relative z-10 px-3 py-1 rounded-full bg-surface-container text-on-surface-variant text-label-sm font-label-sm" id="result-quiz-title">💗 Тестийн нэр</span>
+
+      <div class="relative z-10 mt-1 w-[140px] h-[140px] shrink-0" id="score-ring-wrap">
+        <svg viewBox="0 0 120 120" width="140" height="140" class="-rotate-90">
+          <circle cx="60" cy="60" r="50" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="10" />
+          <circle id="score-ring-fill" cx="60" cy="60" r="50" fill="none" stroke="#D8EE48" stroke-width="10" stroke-linecap="round" stroke-dasharray="314.16" stroke-dashoffset="314.16" style="transition:stroke-dashoffset .1s linear" />
+        </svg>
+        <div class="absolute inset-0 flex flex-col items-center justify-center gap-0.5">
+          <span class="font-display text-headline-lg text-on-surface" id="result-score">0/0</span>
+          <span class="font-label-sm text-label-sm text-on-surface-variant" id="result-pct">0%</span>
+        </div>
+        <img id="result-avatar" src="" alt="" class="absolute -bottom-0.5 -right-0.5 w-11 h-11 rounded-full object-cover object-top shadow-md ring-[3px] ring-surface-container-low" />
+      </div>
+
+      <p class="relative z-10 font-label-lg text-label-lg text-on-surface mt-1" id="result-nickname">Нэргүй найз</p>
+      <p class="relative z-10 font-body text-body-md text-primary-fixed font-extrabold" id="result-message">Маш сайн!</p>
     </div>
 
     <!-- Answer breakdown -->

@@ -64,9 +64,9 @@ const QUESTION_BANK = [
   ]},
   { id: "h4", cat: "habit", emoji: "🧹", text: "Миний өрөө ямар байдаг вэ?", options: [
     { id: "a", emoji: "✨", text: "Үргэлж цэвэрхэн, эмх цэгцтэй" },
-    { id: "b", emoji: "📚", text: "Зохион бус боловч зохицсон эмх" },
+    { id: "b", emoji: "📚", text: "Санамсаргүй мэт ч өөрийн эмхтэй" },
     { id: "c", emoji: "🌪️", text: "Заримдаа эмх замбараагүй болдог" },
-    { id: "d", emoji: "😅", text: "Байнга эрэмбэлэх шаардлагатай" },
+    { id: "d", emoji: "😅", text: "Байнга цэгцлэх шаардлагатай" },
   ]},
   { id: "h5", cat: "habit", emoji: "🏃", text: "Долоо хоногт хичнээн удаа дасгал хийдэг вэ?", options: [
     { id: "a", emoji: "💪", text: "Бараг өдөр бүр" },
@@ -94,7 +94,7 @@ const QUESTION_BANK = [
     { id: "c", emoji: "🎨", text: "Зурах, бүтээлч санаа" },
     { id: "d", emoji: "🧠", text: "Хурдан шийдвэр гаргах" },
   ]},
-  { id: "d4", cat: "dream", emoji: "📚", text: "Сурч байхаар сонгохсон мэргэжил юу вэ?", options: [
+  { id: "d4", cat: "dream", emoji: "📚", text: "Сурч байхаар сонгосон мэргэжил юу вэ?", options: [
     { id: "a", emoji: "💻", text: "IT / Технологи" },
     { id: "b", emoji: "🎨", text: "Дизайн / Урлаг" },
     { id: "c", emoji: "💼", text: "Бизнес / Санхүү" },
@@ -102,7 +102,7 @@ const QUESTION_BANK = [
   ]},
 
   // 🙈 Хөгжилтэй дурсамж
-  { id: "fu1", cat: "fun", emoji: "😂", text: "Найзуудтайгаа хамгийн их инээсэн мөч хэзээ байсан бэ?", options: [
+  { id: "fu1", cat: "fun", emoji: "😂", text: "Найзуудтайгаа хамгийн их ямар үед инээдэг вэ?", options: [
     { id: "a", emoji: "🎮", text: "Хамтдаа тоглоом тоглож байхад" },
     { id: "b", emoji: "🚗", text: "Хаа нэг газар явж байхдаа" },
     { id: "c", emoji: "🎉", text: "Найрсаг цугларалт дээр" },
@@ -148,7 +148,7 @@ const QUESTION_BANK = [
     { id: "c", emoji: "✨", text: "Y2K" },
     { id: "d", emoji: "🧸", text: "Cozy / comfy" },
   ]},
-  { id: "s2", cat: "style", emoji: "🗣️", text: "Чуулган дунд би ямар хүн вэ?", options: [
+  { id: "s2", cat: "style", emoji: "🗣️", text: "Найзуудын дунд би ямар хүн вэ?", options: [
     { id: "a", emoji: "🎉", text: "Хамгийн чангаар ярьдаг, тоглодог" },
     { id: "b", emoji: "👂", text: "Чимээгүйхэн ажиглаж сонсдог" },
     { id: "c", emoji: "😄", text: "Хошигнож инээлгэдэг" },
@@ -188,7 +188,7 @@ const QUESTION_BANK = [
     { id: "c", emoji: "📅", text: "Хоолны/аяллын төлөвлөгч" },
     { id: "d", emoji: "🫶", text: "Үргэлж дэмждэг хүн" },
   ]},
-  { id: "fr2", cat: "friend", emoji: "📞", text: "Найзадаа хэрэгтэй үед би юу хийдэг вэ?", options: [
+  { id: "fr2", cat: "friend", emoji: "📞", text: "Найздаа хэрэгтэй үед би юу хийдэг вэ?", options: [
     { id: "a", emoji: "📞", text: "Шууд залгаж асууна" },
     { id: "b", emoji: "🚗", text: "Шууд очиж тусална" },
     { id: "c", emoji: "💌", text: "Урт зурвас бичнэ" },

@@ -1,17 +1,11 @@
 /*
- * Bestie — Firebase тохиргоо (сонголттой)
+ * Bestie — Firebase тохиргоо
  * -----------------------------------------------------
- * Энэ апп localStorage дээр л ажиллана (ENABLED: false үед).
- * Гэхдээ линкээ өөр төхөөрөмж дээр нээвэл (найз нь өөр утас/компьютер
- * дээр нээнэ) мэдээлэл зөвхөн localStorage-д байвал харагдахгүй.
- * Тийм учраас найзууд үнэхээр өөр өөр төхөөрөмжөөс хариулахыг хүсвэл
- * доорх тохиргоог бөглөж, ENABLED-ийг true болго.
+ * ENABLED: true үед Realtime Database-ээр дамжуулж тест/хариултуудыг
+ * бүх browser, бүх төхөөрөмжөөс хандаж болдог болгоно (localStorage бол
+ * зөвхөн тухайн browser дээрээ л ажилладаг байсан).
  *
- * Firebase console → Project settings → General → "Your apps" → SDK setup
- * хэсгээс config object-оо хуулаад энд буулгана:
- * https://console.firebase.google.com/project/emonos-c9418/
- *
- * Realtime Database-ийн Rules хэсэгт (MVP, бүртгэлгүй үед):
+ * Realtime Database-ийн Rules хэсэгт (MVP, бүртгэлгүй үед) ийм байх ёстой:
  * {
  *   "rules": {
  *     "quizzes": {
@@ -20,14 +14,15 @@
  *     }
  *   }
  * }
+ * Console: https://console.firebase.google.com/project/emonos-c9418/database/emonos-c9418-default-rtdb/rules
  */
 const BESTIE_FIREBASE_CONFIG = {
-  ENABLED: false, // true болговол Firebase Realtime Database ашиглана
-  apiKey: "",
+  ENABLED: true,
+  apiKey: "AIzaSyBF3AjBX16-Zz_PrLZQTWWC62D6dnnVAjY",
   authDomain: "emonos-c9418.firebaseapp.com",
-  databaseURL: "https://emonos-c9418-default-rtdb.firebaseio.com",
+  databaseURL: "https://emonos-c9418-default-rtdb.asia-southeast1.firebasedatabase.app",
   projectId: "emonos-c9418",
-  storageBucket: "emonos-c9418.appspot.com",
-  messagingSenderId: "",
-  appId: "",
+  storageBucket: "emonos-c9418.firebasestorage.app",
+  messagingSenderId: "387620022807",
+  appId: "1:387620022807:web:45f5efc0e70fdcb29cca52",
 };

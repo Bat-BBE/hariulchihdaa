@@ -63,15 +63,50 @@ async function init() {
       showErrorScreen("Тест хаагдсан байна", "Энэ тестийн эзэмшигч линкийг хаасан байна.");
       return;
     }
+
+    // Guard: the creator's own browser remembers quizzes it made (DB.myQuizzes()).
+    // If this is that quiz, block answering it so ranking only reflects real friends.
+    const mine = DB.myQuizzes().find((m) => m.code === quiz.code);
+    if (mine) {
+      const manageUrl = quizUrl("manage.html", { code: mine.code, token: mine.token });
+      const shareUrl = quizUrl("play.html", { code: mine.code });
+      document.getElementById("own-manage-link").href = manageUrl;
+      window._ownShareUrl = shareUrl;
+      window._ownQuizTitle = quiz.title;
+      showScreen("screen-own");
+      return;
+    }
   }
 
   document.getElementById("header-title").textContent = quiz.title;
   document.getElementById("intro-emoji").textContent = quiz.emoji || "💗";
-  document.getElementById("intro-creator").textContent = `${quiz.creatorName || "Найз"}-н тест`;
+  document.getElementById("intro-creator").textContent = quiz.creatorName ? `${quiz.creatorName}-н тест` : "Найзын тест";
   document.getElementById("intro-title").textContent = quiz.title;
   document.getElementById("intro-qcount").textContent = `${quiz.questions.length} асуулт`;
-  renderAvatarPicker();
+  if (quiz.creatorAvatar) {
+    const creatorAvatarImg = document.getElementById("intro-creator-avatar");
+    creatorAvatarImg.src = quiz.creatorAvatar;
+    creatorAvatarImg.classList.remove("hidden");
+  }
+
+  const remembered = getIdentity();
+  renderAvatarPicker(remembered ? remembered.avatarId : null);
+  const nicknameInput = document.getElementById("nickname");
+  if (remembered && remembered.nickname) {
+    nicknameInput.value = remembered.nickname;
+  }
+  nicknameInput.addEventListener("input", () => {
+    document.getElementById("nickname-error").classList.add("hidden");
+    nicknameInput.classList.remove("ring-2", "ring-error");
+  });
+
   showScreen("screen-intro");
+}
+
+function shareOwnQuiz() {
+  if (window._ownShareUrl) {
+    shareLink(window._ownShareUrl, { title: "Bestie 💗", text: `${window._ownQuizTitle} — хариулаад үз!` });
+  }
 }
 
 function showErrorScreen(title, text) {
@@ -80,23 +115,47 @@ function showErrorScreen(title, text) {
   showScreen("screen-error");
 }
 
-function renderAvatarPicker() {
+function renderAvatarPicker(preferredAvatarId) {
   const host = document.getElementById("avatar-picker");
+  let startIndex = AVATAR_POOL.findIndex((a) => a.id === preferredAvatarId);
+  if (startIndex < 0) startIndex = 0;
+  selectedAvatar = AVATAR_POOL[startIndex];
+
   host.innerHTML = AVATAR_POOL.map(
-    (a, i) => `<button type="button" data-i="${i}" class="avatar-btn shrink-0 w-16 h-16 rounded-full overflow-hidden bg-surface-container ${i === 0 ? "ring-2 ring-primary-fixed" : ""}">
+    (a, i) => `<button type="button" data-i="${i}" class="avatar-btn ${i === startIndex ? "is-active ring-[3px] ring-primary-fixed scale-105 shadow-glow" : "ring-2 ring-transparent"} relative shrink-0 w-16 h-16 rounded-full overflow-hidden bg-surface-container transition-all">
       <img src="${a.src}" alt="" class="w-full h-full object-cover object-top" />
+      <span class="avatar-check hidden absolute -bottom-0.5 -right-0.5 w-5 h-5 rounded-full bg-primary-fixed text-on-primary-fixed items-center justify-center shadow-md">
+        <span class="material-symbols-outlined text-[12px]">check</span>
+      </span>
     </button>`
   ).join("");
   host.querySelectorAll(".avatar-btn").forEach((btn) => {
     btn.addEventListener("click", () => {
       selectedAvatar = AVATAR_POOL[Number(btn.dataset.i)];
-      host.querySelectorAll(".avatar-btn").forEach((b) => b.classList.remove("ring-2", "ring-primary-fixed"));
-      btn.classList.add("ring-2", "ring-primary-fixed");
+      host.querySelectorAll(".avatar-btn").forEach((b) => b.classList.remove("is-active", "ring-[3px]", "ring-primary-fixed", "scale-105", "shadow-glow"));
+      host.querySelectorAll(".avatar-btn").forEach((b) => b.classList.add("ring-2", "ring-transparent"));
+      btn.classList.remove("ring-2", "ring-transparent");
+      btn.classList.add("is-active", "ring-[3px]", "ring-primary-fixed", "scale-105", "shadow-glow");
     });
   });
 }
 
 function startQuiz() {
+  const nicknameInput = document.getElementById("nickname");
+  const nickname = nicknameInput.value.trim();
+  const errorEl = document.getElementById("nickname-error");
+
+  if (!nickname) {
+    errorEl.classList.remove("hidden");
+    nicknameInput.classList.add("ring-2", "ring-error");
+    nicknameInput.focus();
+    return;
+  }
+  errorEl.classList.add("hidden");
+  nicknameInput.classList.remove("ring-2", "ring-error");
+
+  saveIdentity({ nickname, avatarId: selectedAvatar.id });
+
   qIndex = 0;
   answers = {};
   startTime = Date.now();
@@ -120,9 +179,9 @@ function renderQuestion() {
   host.innerHTML = q.options
     .map(
       (o) => `<button type="button" data-oid="${o.id}" class="opt-btn w-full text-left p-space-md rounded-lg ${chosen === o.id ? "bg-surface-container-highest ring-2 ring-primary-fixed" : "bg-surface-container-high"} transition-all flex items-center justify-between gap-3">
-      <span class="flex items-center gap-3 min-w-0">
+      <span class="flex items-center gap-3 min-w-0 flex-1">
         <span class="w-11 h-11 rounded-full bg-surface-container flex items-center justify-center text-xl shrink-0">${o.emoji}</span>
-        <span class="font-label-lg text-label-lg ${chosen === o.id ? "text-primary-fixed" : "text-on-surface"} truncate">${escapeHtml(o.text)}</span>
+        <span class="font-label-lg text-label-lg ${chosen === o.id ? "text-primary-fixed" : "text-on-surface"} flex-1 min-w-0 truncate">${escapeHtml(o.text)}</span>
       </span>
       <span class="material-symbols-outlined text-[20px] ${chosen === o.id ? "text-primary-fixed" : "text-on-surface-variant"} shrink-0">${chosen === o.id ? "check_circle" : "radio_button_unchecked"}</span>
     </button>`

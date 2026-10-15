@@ -1,116 +1,438 @@
 <!doctype html>
 <html lang="mn" class="dark">
-<head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover" />
-<title>Удирдах 🔐 — Bestie</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%92%97%3C/text%3E%3C/svg%3E" />
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" rel="stylesheet" />
-<script src="https://cdn.tailwindcss.com"></script>
-<script src="js/theme.js"></script>
-<style>
-  @layer base{
-    html,body{width:100vw;margin:0;padding:0;background-color:#0E0F1F;}
-    body{overscroll-behavior:none;font-family:"Nunito",sans-serif;}
-    .pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}
-    .pt-safe{padding-top:env(safe-area-inset-top,0px);}
-  }
-  ::-webkit-scrollbar{display:none;}
-  .screen{display:none;}
-  .screen.active{display:flex;}
-  .switch{width:46px;height:26px;border-radius:999px;position:relative;transition:background .2s;}
-  .switch .knob{width:20px;height:20px;border-radius:999px;background:#fff;position:absolute;top:3px;left:3px;transition:left .2s;}
-  .switch.on{background:#D8EE48;}
-  .switch.on .knob{left:23px;}
-  .switch.off{background:#46485E;}
-</style>
-</head>
-<body class="bg-surface font-body text-on-surface flex flex-col min-h-screen">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover"
+    />
+    <title>Удирдах 🔐 — Bestie</title>
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%92%97%3C/text%3E%3C/svg%3E"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="js/theme.js"></script>
+    <style>
+      @layer base {
+        html,
+        body {
+          width: 100vw;
+          margin: 0;
+          padding: 0;
+          background-color: #0e0f1f;
+        }
+        body {
+          overscroll-behavior: none;
+          font-family: "Nunito", sans-serif;
+        }
+        .pb-safe {
+          padding-bottom: env(safe-area-inset-bottom, 0px);
+        }
+        .pt-safe {
+          padding-top: env(safe-area-inset-top, 0px);
+        }
+      }
+      ::-webkit-scrollbar {
+        display: none;
+      }
+      .screen {
+        display: none;
+      }
+      .screen.active {
+        display: flex;
+      }
+      .switch {
+        width: 46px;
+        height: 26px;
+        border-radius: 999px;
+        position: relative;
+        transition: background 0.2s;
+        flex-shrink: 0;
+      }
+      .switch .knob {
+        width: 20px;
+        height: 20px;
+        border-radius: 999px;
+        background: #fff;
+        position: absolute;
+        top: 3px;
+        left: 3px;
+        transition: left 0.2s;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+      }
+      .switch.on {
+        background: #d8ee48;
+      }
+      .switch.on .knob {
+        left: 23px;
+      }
+      .switch.off {
+        background: #46485e;
+      }
 
-<header class="fixed top-0 inset-x-0 z-50 bg-surface/90 backdrop-blur-xl pt-safe">
-  <div class="h-16 px-margin flex items-center justify-between gap-3">
-    <a href="index.html" class="w-11 h-11 flex items-center justify-center rounded-full bg-surface-container text-on-surface shrink-0">
-      <span class="material-symbols-outlined text-[20px]">arrow_back_ios_new</span>
-    </a>
-    <span class="font-display text-label-lg text-label-lg text-on-surface">Удирдлага</span>
-    <div class="w-11 h-11 shrink-0"></div>
-  </div>
-</header>
+      @keyframes fadeUp {
+        from {
+          opacity: 0;
+          transform: translateY(12px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .fade-up {
+        animation: fadeUp 0.5s cubic-bezier(0.2, 0.7, 0.3, 1) both;
+      }
+      .rank-1 {
+        background: linear-gradient(
+          135deg,
+          rgba(216, 238, 72, 0.16),
+          rgba(216, 238, 72, 0.04)
+        );
+        box-shadow: 0 0 0 1px rgba(216, 238, 72, 0.3);
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .fade-up {
+          animation: none !important;
+        }
+      }
+    </style>
+  </head>
+  <body class="bg-surface font-body text-on-surface flex flex-col min-h-screen">
+    <header
+      class="fixed top-0 inset-x-0 z-50 bg-surface/90 backdrop-blur-xl pt-safe"
+    >
+      <div class="h-16 px-margin flex items-center justify-between gap-3">
+        <a
+          href="index.html"
+          class="w-11 h-11 flex items-center justify-center rounded-full bg-surface-container text-on-surface shrink-0"
+        >
+          <span class="material-symbols-outlined text-[20px]"
+            >arrow_back_ios_new</span
+          >
+        </a>
+        <span
+          class="font-display text-label-lg text-label-lg text-on-surface flex items-center gap-1.5"
+          ><span
+            class="material-symbols-outlined text-[18px] text-primary-fixed"
+            >admin_panel_settings</span
+          >Удирдлага</span
+        >
+        <div class="w-11 h-11 shrink-0"></div>
+      </div>
+    </header>
 
-<main class="flex flex-col relative w-full pt-20 pb-10 bg-surface min-h-screen px-margin">
+    <main
+      class="flex flex-col relative w-full pt-20 pb-10 bg-surface min-h-screen px-margin"
+    >
+      <section
+        class="screen active flex-col items-center justify-center gap-3 pt-24 text-center"
+        id="screen-loading"
+      >
+        <span class="text-4xl animate-bounce">🔐</span>
+        <p class="font-body text-body-md text-on-surface-variant">
+          Ачаалж байна...
+        </p>
+      </section>
 
-  <section class="screen active flex-col items-center justify-center gap-3 pt-24 text-center" id="screen-loading">
-    <span class="text-4xl animate-bounce">🔐</span>
-    <p class="font-body text-body-md text-on-surface-variant">Ачаалж байна...</p>
-  </section>
+      <section
+        class="screen flex-col items-center justify-center gap-4 pt-24 text-center"
+        id="screen-error"
+      >
+        <span class="text-5xl">🚫</span>
+        <h1 class="font-display text-headline-md text-on-surface">
+          Эрх хүрэлцэхгүй байна
+        </h1>
+        <p class="font-body text-body-md text-on-surface-variant">
+          Удирдлагын линк буруу байна. Зөвхөн асуулт үүсгэгч энэ хуудсыг ашиглаж
+          чадна.
+        </p>
+        <a
+          href="index.html"
+          class="mt-2 px-6 h-12 rounded-full bg-primary-container text-on-primary-fixed font-label-lg text-label-lg flex items-center justify-center"
+          >Нүүр хуудас руу</a
+        >
+      </section>
 
-  <section class="screen flex-col items-center justify-center gap-4 pt-24 text-center" id="screen-error">
-    <span class="text-5xl">🚫</span>
-    <h1 class="font-display text-headline-md text-on-surface">Эрх хүрэлцэхгүй байна</h1>
-    <p class="font-body text-body-md text-on-surface-variant">Удирдлагын линк буруу байна. Зөвхөн тест үүсгэгч энэ хуудсыг ашиглаж чадна.</p>
-    <a href="index.html" class="mt-2 px-6 h-12 rounded-full bg-primary-container text-on-primary-fixed font-label-lg text-label-lg flex items-center justify-center">Нүүр хуудас руу</a>
-  </section>
+      <section class="screen flex-col gap-space-lg pt-2" id="screen-manage">
+        <!-- Hero -->
+        <div
+          class="fade-up relative w-full rounded-lg bg-surface-container-low p-space-lg overflow-hidden shadow-card flex flex-col gap-3.5"
+        >
+          <div
+            class="absolute -top-16 -right-16 w-52 h-52 rounded-full bg-secondary-container/35 blur-3xl pointer-events-none"
+          ></div>
+          <div
+            class="absolute -bottom-16 -left-12 w-44 h-44 rounded-full bg-primary-fixed/15 blur-3xl pointer-events-none"
+          ></div>
 
-  <section class="screen flex-col gap-space-lg pt-2" id="screen-manage">
-    <div class="relative w-full rounded-lg bg-surface-container-low p-space-lg overflow-hidden shadow-card flex flex-col gap-3">
-      <div class="flex items-center gap-3">
-        <div class="w-14 h-14 rounded-full bg-primary-fixed/15 flex items-center justify-center text-3xl" id="m-emoji">💗</div>
-        <div class="flex flex-col min-w-0">
-          <h1 class="font-display text-headline-md text-on-surface truncate" id="m-title">Тестийн нэр</h1>
-          <span class="font-body text-body-sm text-on-surface-variant" id="m-meta">0 асуулт · 0 хариулсан</span>
+          <div class="relative z-10 flex items-center gap-3">
+            <div
+              class="w-16 h-16 rounded-full bg-primary-fixed/15 flex items-center justify-center text-3xl shrink-0 shadow-md"
+              id="m-emoji"
+            >
+              💗
+            </div>
+            <div class="flex flex-col min-w-0 flex-1">
+              <h1
+                class="font-display text-headline-md text-on-surface truncate"
+                id="m-title"
+              >
+                Асуултын нэр
+              </h1>
+              <span
+                class="font-body text-body-sm text-on-surface-variant"
+                id="m-meta"
+                >0 асуулт · 0 хариулсан</span
+              >
+            </div>
+          </div>
+
+          <div
+            class="relative z-10 flex items-center flex-wrap gap-2"
+            id="status-pills"
+          >
+            <span
+              class="flex items-center gap-1 px-2.5 py-1 rounded-full bg-surface-container text-label-sm text-label-sm font-bold"
+              id="pill-open"
+              >🟢 Нээлттэй</span
+            >
+            <span
+              class="flex items-center gap-1 px-2.5 py-1 rounded-full bg-surface-container text-label-sm text-label-sm font-bold"
+              id="pill-ranking"
+              >👁️ Ranking харагдана</span
+            >
+          </div>
+
+          <div
+            class="relative z-10 flex items-center justify-between gap-2 p-space-md rounded bg-surface-container-high"
+          >
+            <div class="flex items-center gap-2 min-w-0 flex-1">
+              <span
+                class="material-symbols-outlined text-[18px] text-primary-fixed shrink-0"
+                >link</span
+              >
+              <span
+                id="m-share-url"
+                class="font-body text-body-sm text-on-surface truncate flex-1 min-w-0"
+              ></span>
+            </div>
+            <button
+              onclick="copyShare()"
+              class="shrink-0 w-10 h-10 rounded-full bg-surface-container flex items-center justify-center active:scale-95 transition-transform"
+              aria-label="Линк хуулах"
+            >
+              <span class="material-symbols-outlined text-[18px]"
+                >content_copy</span
+              >
+            </button>
+          </div>
+          <button
+            onclick="shareQuiz()"
+            class="relative z-10 w-full h-13 rounded-full bg-primary-fixed text-on-primary-fixed font-label-lg text-label-lg flex items-center justify-center gap-2 shadow-glow active:scale-[0.98] transition-transform"
+          >
+            <span class="material-symbols-outlined text-[18px]">ios_share</span
+            ><span>Найзууддаа илгээх</span>
+          </button>
         </div>
-      </div>
-      <div class="flex items-center justify-between gap-2 p-space-md rounded bg-surface-container">
-        <span id="m-share-url" class="font-body text-body-sm text-on-surface truncate flex-1"></span>
-        <button onclick="copyShare()" class="shrink-0 w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center"><span class="material-symbols-outlined text-[18px]">content_copy</span></button>
-        <button onclick="shareQuiz()" class="shrink-0 w-10 h-10 rounded-full bg-primary-fixed text-on-primary-fixed flex items-center justify-center"><span class="material-symbols-outlined text-[18px]">ios_share</span></button>
-      </div>
-    </div>
 
-    <div class="grid grid-cols-2 gap-3">
-      <div class="p-space-md rounded bg-surface-container flex flex-col items-center gap-1">
-        <span class="font-display text-headline-lg text-primary-fixed" id="stat-attempts">0</span>
-        <span class="font-body text-body-sm text-on-surface-variant">Хариулсан найз</span>
-      </div>
-      <div class="p-space-md rounded bg-surface-container flex flex-col items-center gap-1">
-        <span class="font-display text-headline-lg text-primary-fixed" id="stat-avg">0%</span>
-        <span class="font-body text-body-sm text-on-surface-variant">Дундаж оноо</span>
-      </div>
-    </div>
+        <!-- Stats -->
+        <div
+          class="fade-up grid grid-cols-3 gap-2.5"
+          style="animation-delay: 0.05s"
+        >
+          <div
+            class="p-space-md rounded bg-surface-container flex flex-col items-center gap-1 text-center"
+          >
+            <span
+              class="material-symbols-outlined text-[18px] text-secondary-fixed-dim"
+              >groups</span
+            >
+            <span
+              class="font-display text-headline-md text-on-surface"
+              id="stat-attempts"
+              >0</span
+            >
+            <span
+              class="font-body text-body-sm text-on-surface-variant leading-tight"
+              >Хариулсан</span
+            >
+          </div>
+          <div
+            class="p-space-md rounded bg-surface-container flex flex-col items-center gap-1 text-center"
+          >
+            <span
+              class="material-symbols-outlined text-[18px] text-primary-fixed"
+              >track_changes</span
+            >
+            <span
+              class="font-display text-headline-md text-on-surface"
+              id="stat-avg"
+              >0%</span
+            >
+            <span
+              class="font-body text-body-sm text-on-surface-variant leading-tight"
+              >Дундаж оноо</span
+            >
+          </div>
+          <div
+            class="p-space-md rounded bg-surface-container flex flex-col items-center gap-1 text-center"
+          >
+            <span
+              class="material-symbols-outlined text-[18px] text-tertiary-fixed-dim"
+              >emoji_events</span
+            >
+            <span
+              class="font-display text-headline-md text-on-surface"
+              id="stat-top"
+              >—</span
+            >
+            <span
+              class="font-body text-body-sm text-on-surface-variant leading-tight"
+              >Шилдэг оноо</span
+            >
+          </div>
+        </div>
 
-    <div class="flex flex-col gap-2.5">
-      <div class="flex items-center justify-between p-space-md rounded bg-surface-container">
-        <div class="flex flex-col"><span class="font-label-lg text-label-lg text-on-surface">Линк нээлттэй</span><span class="font-body text-body-sm text-on-surface-variant">Унтраавал шинэ хүн тест бөглөж чадахгүй</span></div>
-        <button id="toggle-open" class="switch" onclick="toggleOpen()"><span class="knob"></span></button>
-      </div>
-      <div class="flex items-center justify-between p-space-md rounded bg-surface-container">
-        <div class="flex flex-col"><span class="font-label-lg text-label-lg text-on-surface">Ranking харуулах</span><span class="font-body text-body-sm text-on-surface-variant">Хариулагчид бусдын оноог харах эсэх</span></div>
-        <button id="toggle-ranking" class="switch" onclick="toggleRankingVis()"><span class="knob"></span></button>
-      </div>
-    </div>
+        <!-- Settings -->
+        <div
+          class="fade-up flex flex-col gap-2.5"
+          style="animation-delay: 0.1s"
+        >
+          <h2
+            class="font-display text-headline-md text-on-surface px-1 flex items-center gap-1.5"
+          >
+            <span
+              class="material-symbols-outlined text-[18px] text-on-surface-variant"
+              >tune</span
+            >Тохиргоо
+          </h2>
+          <div
+            class="flex items-center justify-between gap-3 p-space-md rounded bg-surface-container"
+          >
+            <div class="flex items-center gap-3 min-w-0">
+              <div
+                class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center shrink-0 text-lg"
+                id="open-icon"
+              >
+                🔓
+              </div>
+              <div class="flex flex-col min-w-0">
+                <span class="font-label-lg text-label-lg text-on-surface"
+                  >Линк нээлттэй</span
+                ><span class="font-body text-body-sm text-on-surface-variant"
+                  >Унтраавал хэн ч цаашид бөглөж чадахгүй болно</span
+                >
+              </div>
+            </div>
+            <button id="toggle-open" class="switch" onclick="toggleOpen()">
+              <span class="knob"></span>
+            </button>
+          </div>
+          <div
+            class="flex items-center justify-between gap-3 p-space-md rounded bg-surface-container"
+          >
+            <div class="flex items-center gap-3 min-w-0">
+              <div
+                class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center shrink-0 text-lg"
+                id="ranking-icon"
+              >
+                👁️
+              </div>
+              <div class="flex flex-col min-w-0">
+                <span class="font-label-lg text-label-lg text-on-surface"
+                  >Ranking харуулах</span
+                ><span class="font-body text-body-sm text-on-surface-variant"
+                  >Хариулагчид бусдын оноог харах эсэх</span
+                >
+              </div>
+            </div>
+            <button
+              id="toggle-ranking"
+              class="switch"
+              onclick="toggleRankingVis()"
+            >
+              <span class="knob"></span>
+            </button>
+          </div>
+        </div>
 
-    <div class="flex flex-col gap-2">
-      <h2 class="font-display text-headline-md text-on-surface px-1">Bestie Ranking 🏆</h2>
-      <div class="flex flex-col gap-2" id="ranking-list">
-        <p class="font-body text-body-md text-on-surface-variant px-1" id="ranking-empty">Одоохондоо хариулсан найз алга. Линкээ илгээгээрэй!</p>
-      </div>
-    </div>
+        <!-- Ranking -->
+        <div class="fade-up flex flex-col gap-2" style="animation-delay: 0.15s">
+          <div class="flex items-center justify-between px-1">
+            <h2 class="font-display text-headline-md text-on-surface">
+              Bestie Ranking 🏆
+            </h2>
+            <button
+              onclick="openStorySheetFor(mQuiz)"
+              class="flex items-center gap-1 px-3 py-1.5 rounded-full bg-surface-container-high text-on-surface text-label-sm text-label-sm font-bold active:scale-95 transition-transform"
+            >
+              <span class="material-symbols-outlined text-[16px]"
+                >photo_camera</span
+              ><span>Story хийх</span>
+            </button>
+          </div>
+          <div class="flex flex-col gap-2" id="ranking-list">
+            <p
+              class="font-body text-body-md text-on-surface-variant px-1"
+              id="ranking-empty"
+            >
+              Одоохондоо хариулсан найз алга. Линкээ илгээгээрэй!
+            </p>
+          </div>
+        </div>
 
-    <button onclick="confirmDelete()" class="mt-2 w-full h-13 rounded-full bg-error-container/20 text-error font-label-lg text-label-lg flex items-center justify-center gap-2">
-      <span class="material-symbols-outlined text-[18px]">delete_forever</span><span>Тестийг устгах</span>
-    </button>
-  </section>
-</main>
+        <!-- Danger zone -->
+        <div
+          class="fade-up flex flex-col gap-2 pt-2 mt-1 border-t border-surface-container-high"
+          style="animation-delay: 0.2s"
+        >
+          <h2
+            class="font-label-sm text-label-sm text-on-surface-variant px-1 uppercase tracking-wider pt-3"
+          >
+            Аюултай бүс
+          </h2>
+          <button
+            onclick="confirmDelete()"
+            class="w-full h-13 rounded-full bg-error-container/15 text-error font-label-lg text-label-lg flex items-center justify-center gap-2 active:scale-[0.98] transition-transform"
+          >
+            <span class="material-symbols-outlined text-[18px]"
+              >delete_forever</span
+            ><span>Асуултыг устгах</span>
+          </button>
+          <p
+            class="font-body text-body-sm text-on-surface-variant/70 text-center"
+          >
+            Устгасны дараа буцаах боломжгүй.
+          </p>
+        </div>
+      </section>
+    </main>
 
-<script src="js/questions.js"></script>
-<script src="js/firebase-config.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database-compat.js"></script>
-<script src="js/db.js"></script>
-<script src="js/ui.js"></script>
-<script src="js/manage.js"></script>
-</body>
+    <script src="js/questions.js"></script>
+    <script src="js/firebase-config.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database-compat.js"></script>
+    <script src="js/db.js"></script>
+    <script src="js/ui.js"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"
+      integrity="sha512-BNaRQnYJYiPSqHHDb58B0yaPfCu+Wgds8Gp/gU33kqBtgNS4tSPHuGibyoeqMV/TJlSKda6FXzoEyYGjTe+vXA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script src="js/story.js"></script>
+    <script src="js/manage.js"></script>
+  </body>
 </html>

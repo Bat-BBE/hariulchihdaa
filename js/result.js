@@ -7,7 +7,7 @@ function showScreen(id) {
 function scoreMessage(pct) {
   if (pct >= 1) return "Чи намайг 100% мэднэ! Жинхэнэ bestie 👑";
   if (pct >= 0.7) return "Маш сайн! Чи намайг үнэхээр сайн мэднэ 😍";
-  if (pct >= 0.4) return "Санаанд оройлгодоо! Дунд зэрэг оноо 😄";
+  if (pct >= 0.4) return "Дунд зэрэг тохирлоо — дахин оролдоод үз 😄";
   return "Хөөх, бие биенээ илүү сайн танилцах хэрэгтэй юм байна 🙈";
 }
 
@@ -15,6 +15,42 @@ function launchConfetti() {
   if (typeof confetti !== "function") return;
   confetti({ particleCount: 90, spread: 75, origin: { y: 0.4 }, colors: ["#D8EE48", "#DBB8FF", "#FFB0CB", "#FFFFFF"] });
   setTimeout(() => confetti({ particleCount: 50, spread: 100, origin: { y: 0.3 } }), 300);
+}
+
+function ringColor(pct) {
+  if (pct >= 0.7) return "#D8EE48";
+  if (pct >= 0.4) return "#DBB8FF";
+  return "#FFB0CB";
+}
+
+function animateResultReveal({ scoreEl, pctEl, ring, score, total, onDone }) {
+  const duration = 950;
+  const start = performance.now();
+  const finalPct = total ? score / total : 0;
+  const circumference = 2 * Math.PI * 50;
+
+  ring.style.stroke = ringColor(finalPct);
+  ring.setAttribute("stroke-dasharray", String(circumference));
+  ring.setAttribute("stroke-dashoffset", String(circumference));
+
+  function tick(now) {
+    const t = Math.min((now - start) / duration, 1);
+    const eased = 1 - Math.pow(1 - t, 3); // easeOutCubic
+    const shownScore = Math.round(eased * score);
+    scoreEl.textContent = `${shownScore}/${total}`;
+    pctEl.textContent = `${Math.round(eased * finalPct * 100)}%`;
+    ring.setAttribute("stroke-dashoffset", String(circumference * (1 - eased * finalPct)));
+    if (t < 1) {
+      requestAnimationFrame(tick);
+    } else {
+      scoreEl.textContent = `${score}/${total}`;
+      pctEl.textContent = `${Math.round(finalPct * 100)}%`;
+      scoreEl.classList.add("score-pop");
+      setTimeout(() => scoreEl.classList.remove("score-pop"), 420);
+      if (onDone) onDone();
+    }
+  }
+  requestAnimationFrame(tick);
 }
 
 async function init() {
@@ -57,17 +93,30 @@ function renderResult(quiz, attempt, isDemo) {
 
   document.getElementById("result-avatar").src = attempt.avatar || "ohin1.png";
   document.getElementById("result-nickname").textContent = attempt.nickname;
-  document.getElementById("result-score").textContent = `${attempt.score}/${attempt.total}`;
   document.getElementById("result-message").textContent = scoreMessage(pct);
   document.getElementById("result-quiz-title").textContent = `${quiz.emoji || "💗"} ${quiz.title}`;
 
-  if (pct >= 0.5) {
-    const gif = document.getElementById("celebrate-gif");
-    gif.src = pct >= 0.8 ? "ohduud.gif" : "ohin.gif";
-    gif.loading = "lazy";
-    gif.classList.remove("hidden");
-  }
-  if (pct >= 0.4) launchConfetti();
+  const scoreEl = document.getElementById("result-score");
+  const pctEl = document.getElementById("result-pct");
+  const ring = document.getElementById("score-ring-fill");
+  scoreEl.textContent = `0/${attempt.total}`;
+  pctEl.textContent = "0%";
+  animateResultReveal({
+    scoreEl,
+    pctEl,
+    ring,
+    score: attempt.score,
+    total: attempt.total,
+    onDone: () => {
+      if (pct >= 0.5) {
+        const gif = document.getElementById("celebrate-gif");
+        gif.src = pct >= 0.8 ? "ohduud.gif" : "ohin.gif";
+        gif.loading = "lazy";
+        gif.classList.remove("hidden");
+      }
+      if (pct >= 0.4) launchConfetti();
+    },
+  });
 
   // Breakdown
   const breakdownHost = document.getElementById("breakdown-list");
@@ -79,9 +128,9 @@ function renderResult(quiz, attempt, isDemo) {
       const correct = a && a.correct;
       return `<div class="p-space-md rounded bg-surface-container flex flex-col gap-1.5">
         <div class="flex items-center gap-2">
-          <span>${q.emoji}</span>
-          <span class="font-label-md text-label-md text-on-surface flex-1">${escapeHtml(q.text)}</span>
-          <span class="material-symbols-outlined text-[18px] ${correct ? "text-primary-fixed" : "text-tertiary-fixed-dim"}">${correct ? "check_circle" : "cancel"}</span>
+          <span class="shrink-0">${q.emoji}</span>
+          <span class="font-label-md text-label-md text-on-surface flex-1 min-w-0">${escapeHtml(q.text)}</span>
+          <span class="material-symbols-outlined text-[18px] shrink-0 ${correct ? "text-primary-fixed" : "text-tertiary-fixed-dim"}">${correct ? "check_circle" : "cancel"}</span>
         </div>
         <div class="flex items-center gap-1.5 text-body-sm font-body text-on-surface-variant pl-6">
           <span>Хариулсан:</span>
@@ -110,10 +159,10 @@ function renderResult(quiz, attempt, isDemo) {
     .map((a, i) => {
       const isMe = a.id === attempt.id;
       return `<div class="p-space-md rounded ${isMe ? "bg-primary-container/15 ring-2 ring-primary-fixed" : "bg-surface-container"} flex items-center gap-3">
-        <span class="w-8 text-center font-display text-label-lg">${medals[i] || i + 1}</span>
-        <img src="${a.avatar || "ohin1.png"}" alt="" class="w-10 h-10 rounded-full object-cover object-top" />
-        <span class="font-label-lg text-label-lg text-on-surface flex-1 truncate">${escapeHtml(a.nickname)}${isMe ? " (чи)" : ""}</span>
-        <span class="font-label-lg text-label-lg text-primary-fixed">${a.score}/${a.total}</span>
+        <span class="w-8 text-center font-display text-label-lg shrink-0">${medals[i] || i + 1}</span>
+        <img src="${a.avatar || "ohin1.png"}" alt="" class="w-10 h-10 rounded-full object-cover object-top shrink-0" />
+        <span class="font-label-lg text-label-lg text-on-surface flex-1 min-w-0 truncate">${escapeHtml(a.nickname)}${isMe ? " (чи)" : ""}</span>
+        <span class="font-label-lg text-label-lg text-primary-fixed shrink-0">${a.score}/${a.total}</span>
       </div>`;
     })
     .join("");

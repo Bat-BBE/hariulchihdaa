@@ -146,7 +146,7 @@ const DB = (() => {
       });
   }
 
-  async function createQuiz({ title, emoji, creatorName, questions, showRanking = true }) {
+  async function createQuiz({ title, emoji, creatorName, creatorAvatar, questions, showRanking = true }) {
     const now = Date.now();
     const code = genCode();
     const quiz = {
@@ -154,6 +154,7 @@ const DB = (() => {
       title: title && title.trim() ? title.trim() : "Намайг хэр сайн мэдэх вэ?",
       emoji: emoji || "💗",
       creatorName: creatorName && creatorName.trim() ? creatorName.trim() : "Нэргүй найз",
+      creatorAvatar: creatorAvatar || "ohin1.png",
       ownerToken: genToken(),
       createdAt: now,
       expiresAt: now + EXPIRY_MS,
