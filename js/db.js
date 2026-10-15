@@ -19,11 +19,21 @@ const DB = (() => {
     if (fbReady) return;
     fbReady = true;
     try {
-      if (!window.BESTIE_FIREBASE_CONFIG || !BESTIE_FIREBASE_CONFIG.ENABLED) return;
-      if (!BESTIE_FIREBASE_CONFIG.apiKey || !BESTIE_FIREBASE_CONFIG.databaseURL) return;
-      if (typeof firebase === "undefined") return;
+      if (typeof BESTIE_FIREBASE_CONFIG === "undefined" || !BESTIE_FIREBASE_CONFIG.ENABLED) {
+        console.log("[Bestie] Firebase унтраалттай (ENABLED:false) — зөвхөн localStorage ашиглана.");
+        return;
+      }
+      if (!BESTIE_FIREBASE_CONFIG.apiKey || !BESTIE_FIREBASE_CONFIG.databaseURL) {
+        console.log("[Bestie] Firebase config дутуу (apiKey/databaseURL алга) — localStorage ашиглана.");
+        return;
+      }
+      if (typeof firebase === "undefined") {
+        console.warn("[Bestie] Firebase SDK ачаалагдаагүй байна (сүлжээ блоклогдсон байж магадгүй) — localStorage ашиглана.");
+        return;
+      }
       fbApp = firebase.initializeApp(BESTIE_FIREBASE_CONFIG);
       fbDb = firebase.database();
+      console.log("[Bestie] Firebase холбогдлоо ✅ — тест бусад browser-оос ч харагдана.");
     } catch (err) {
       console.warn("[Bestie] Firebase ажиллахгүй байна, localStorage ашиглаж байна.", err);
       fbDb = null;

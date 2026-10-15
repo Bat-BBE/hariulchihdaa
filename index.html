@@ -26,7 +26,7 @@
       rel="stylesheet"
     />
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="js/theme.js"></script>
+    <script src="js/theme.js?v=3"></script>
     <style>
       @layer base {
         html,
@@ -177,15 +177,7 @@
         </div>
         <div class="flex items-center gap-2">
           <div id="identity-badge"></div>
-          <a
-            href="create.html"
-            class="w-10 h-10 rounded-full bg-primary-fixed/15 text-primary-fixed flex items-center justify-center active:scale-95 transition-transform"
-            aria-label="Асуулт үүсгэх"
-          >
-            <span class="material-symbols-outlined text-[22px]"
-              >add_circle</span
-            >
-          </a>
+          <div id="notif-badge"></div>
         </div>
       </div>
     </header>
@@ -539,17 +531,23 @@
             >
           </div>
           <span class="font-label-sm text-label-sm font-semibold tracking-tight"
-            >Миний асуулт</span
+            >Асуулт</span
           >
         </a>
       </div>
     </nav>
 
-    <script src="js/questions.js"></script>
-    <script src="js/ui.js"></script>
-    <script src="js/identity.js"></script>
+    <script src="js/questions.js?v=3"></script>
+    <script src="js/firebase-config.js?v=3"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database-compat.js"></script>
+    <script src="js/db.js?v=3"></script>
+    <script src="js/ui.js?v=3"></script>
+    <script src="js/identity.js?v=3"></script>
+    <script src="js/notifications.js?v=3"></script>
     <script>
       mountIdentityWidget();
+      startNotifPolling();
       // Trending template cards — curated 4–5 question sets from js/questions.js
       const grid = document.getElementById("template-grid");
       grid.innerHTML = TEMPLATE_QUIZZES.map(
