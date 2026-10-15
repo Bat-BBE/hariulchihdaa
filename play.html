@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="mn" class="dark">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover" />
+<title>Тест бөглөх 💗 — Bestie</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%92%97%3C/text%3E%3C/svg%3E" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" rel="stylesheet" />
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="js/theme.js"></script>
+<style>
+  @layer base{
+    html,body{width:100vw;margin:0;padding:0;background-color:#0E0F1F;}
+    body{overscroll-behavior:none;font-family:"Nunito",sans-serif;}
+    .pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}
+    .pt-safe{padding-top:env(safe-area-inset-top,0px);}
+  }
+  ::-webkit-scrollbar{display:none;}
+  .screen{display:none;}
+  .screen.active{display:flex;}
+  @keyframes pop{0%{transform:scale(1)}50%{transform:scale(1.03)}100%{transform:scale(1)}}
+  .pop{animation:pop .22s ease;}
+</style>
+</head>
+<body class="bg-surface font-body text-on-surface flex flex-col min-h-screen">
+
+<header class="fixed top-0 inset-x-0 z-50 bg-surface/90 backdrop-blur-xl pt-safe">
+  <div class="h-16 px-margin flex items-center justify-between gap-3">
+    <button onclick="goBackOrHome()" class="w-11 h-11 flex items-center justify-center rounded-full bg-surface-container text-on-surface shrink-0">
+      <span class="material-symbols-outlined text-[20px]">arrow_back_ios_new</span>
+    </button>
+    <div class="flex flex-col items-center flex-1 min-w-0">
+      <span class="font-display text-label-lg text-label-lg text-on-surface truncate" id="header-title">Bestie</span>
+    </div>
+    <div class="px-3 py-1 rounded-full bg-surface-container-high text-primary-fixed font-label-md text-label-md shrink-0 hidden" id="qcounter">1/10</div>
+  </div>
+  <div class="h-1 w-full bg-surface-container-high">
+    <div id="progress-bar" class="h-full bg-primary-fixed transition-all duration-300" style="width:0%"></div>
+  </div>
+</header>
+
+<main class="flex flex-col relative w-full pt-20 pb-10 bg-surface min-h-screen px-margin">
+
+  <!-- Loading -->
+  <section class="screen active flex-col items-center justify-center gap-3 pt-24 text-center" id="screen-loading">
+    <span class="text-4xl animate-bounce">💗</span>
+    <p class="font-body text-body-md text-on-surface-variant">Ачаалж байна...</p>
+  </section>
+
+  <!-- Not found / closed -->
+  <section class="screen flex-col items-center justify-center gap-4 pt-24 text-center" id="screen-error">
+    <span class="text-5xl">😔</span>
+    <h1 class="font-display text-headline-md text-on-surface" id="error-title">Тест олдсонгүй</h1>
+    <p class="font-body text-body-md text-on-surface-variant" id="error-text">Линк буруу эсвэл тест устгагдсан байж магадгүй.</p>
+    <a href="index.html" class="mt-2 px-6 h-12 rounded-full bg-primary-container text-on-primary-fixed font-label-lg text-label-lg flex items-center justify-center">Нүүр хуудас руу</a>
+  </section>
+
+  <!-- Intro -->
+  <section class="screen flex-col gap-space-lg pt-4" id="screen-intro">
+    <div class="relative w-full rounded-lg bg-surface-container-low p-space-lg overflow-hidden shadow-card flex flex-col items-center text-center gap-3">
+      <div class="absolute -top-14 -right-14 w-44 h-44 rounded-full bg-secondary-container/40 blur-3xl pointer-events-none"></div>
+      <div class="w-20 h-20 rounded-full bg-primary-fixed/15 flex items-center justify-center text-4xl relative z-10" id="intro-emoji">💗</div>
+      <div class="relative z-10 flex flex-col gap-1">
+        <span class="font-label-md text-label-md text-secondary-fixed-dim" id="intro-creator">Найзын тест</span>
+        <h1 class="font-display text-headline-lg text-on-surface" id="intro-title">Намайг хэр сайн мэдэх вэ?</h1>
+        <p class="font-body text-body-md text-on-surface-variant" id="intro-sub">Асуултад хариулаад, чи хэр сайн мэддэгээ шалга!</p>
+      </div>
+      <div class="relative z-10 flex items-center gap-2 text-body-sm font-body text-on-surface-variant">
+        <span class="material-symbols-outlined text-[16px]">quiz</span>
+        <span id="intro-qcount">0 асуулт</span>
+      </div>
+    </div>
+
+    <div class="flex flex-col gap-2">
+      <label class="font-label-md text-label-md text-on-surface-variant">Нэрээ оруулаарай</label>
+      <input id="nickname" maxlength="24" placeholder="Нэргүй найз" class="w-full h-14 px-5 rounded bg-surface-container text-on-surface font-body text-body-lg placeholder:text-on-surface-variant/60 outline-none focus:ring-2 focus:ring-primary-fixed" />
+    </div>
+    <div class="flex flex-col gap-2">
+      <label class="font-label-md text-label-md text-on-surface-variant">Аватар сонгох</label>
+      <div class="flex gap-2.5 overflow-x-auto pb-1" id="avatar-picker"></div>
+    </div>
+
+    <button onclick="startQuiz()" class="w-full h-14 rounded-full bg-primary-container text-on-primary-fixed font-label-lg text-label-lg flex items-center justify-center gap-2 shadow-glow active:scale-[0.98] transition-transform">
+      <span class="material-symbols-outlined text-[20px]" style="font-variation-settings:'FILL' 1">play_arrow</span>
+      <span>Эхлэх</span>
+    </button>
+  </section>
+
+  <!-- Question -->
+  <section class="screen flex-col gap-space-md pt-4" id="screen-question">
+    <div class="relative w-full bg-surface-container rounded-lg p-space-lg shadow-xl overflow-hidden">
+      <div class="absolute -top-12 -right-12 w-36 h-36 rounded-full bg-secondary-container/20 blur-2xl pointer-events-none"></div>
+      <div class="absolute -bottom-10 -left-10 w-32 h-32 rounded-full bg-primary-fixed/10 blur-2xl pointer-events-none"></div>
+      <div class="relative z-10 flex items-center justify-between mb-2">
+        <span class="px-3 py-1 rounded-full bg-surface-container-high text-secondary-fixed-dim font-label-sm text-label-sm uppercase tracking-wider flex items-center gap-1" id="q-emoji-pill">💭</span>
+        <span class="font-label-sm text-label-sm text-on-surface-variant flex items-center gap-1">
+          <span class="material-symbols-outlined text-[15px] text-tertiary-fixed-dim" style="font-variation-settings:'FILL' 1">favorite</span>
+          <span id="q-creator-hint">Зөв хариултыг тааж оноо аваарай!</span>
+        </span>
+      </div>
+      <h2 class="relative z-10 font-display text-headline-lg text-on-surface leading-snug" id="q-text">...</h2>
+    </div>
+    <div class="flex flex-col gap-space-sm" id="q-options"></div>
+    <button onclick="prevQuestion()" id="q-back" class="self-start mt-1 flex items-center gap-1 px-4 py-2 rounded-full bg-surface-container text-on-surface-variant text-label-sm text-label-sm font-bold">
+      <span class="material-symbols-outlined text-[16px]">arrow_back</span><span>Буцах</span>
+    </button>
+  </section>
+
+  <!-- Submitting -->
+  <section class="screen flex-col items-center justify-center gap-3 pt-24 text-center" id="screen-submitting">
+    <span class="text-4xl animate-spin">🌀</span>
+    <p class="font-body text-body-md text-on-surface-variant">Онооноос тооцож байна...</p>
+  </section>
+</main>
+
+<script src="js/questions.js"></script>
+<script src="js/firebase-config.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database-compat.js"></script>
+<script src="js/db.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/play.js"></script>
+</body>
+</html>

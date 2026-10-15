@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="mn" class="dark">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover" />
+<title>Миний тестүүд 📋 — Bestie</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%92%97%3C/text%3E%3C/svg%3E" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" rel="stylesheet" />
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="js/theme.js"></script>
+<style>
+  @layer base{
+    html,body{width:100vw;margin:0;padding:0;background-color:#0E0F1F;}
+    body{overscroll-behavior:none;font-family:"Nunito",sans-serif;}
+    .pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}
+    .pt-safe{padding-top:env(safe-area-inset-top,0px);}
+  }
+  ::-webkit-scrollbar{display:none;}
+</style>
+</head>
+<body class="bg-surface font-body text-on-surface flex flex-col min-h-screen">
+
+<header class="fixed top-0 inset-x-0 z-50 bg-surface/85 backdrop-blur-xl pt-safe">
+  <div class="h-16 px-margin flex items-center">
+    <span class="font-display text-headline-md text-on-surface font-extrabold tracking-tight">Миний тестүүд 📋</span>
+  </div>
+</header>
+
+<main class="flex flex-col relative w-full pt-20 pb-28 bg-surface min-h-screen px-margin gap-3">
+  <p class="font-body text-body-sm text-on-surface-variant">Энэ төхөөрөмж дээр үүсгэсэн тестүүд. 7 хоногийн дараа автоматаар устгагдана.</p>
+  <div class="flex flex-col gap-2.5" id="mine-list"></div>
+  <div class="hidden flex-col items-center text-center gap-3 py-10" id="mine-empty">
+    <span class="text-4xl">🗂️</span>
+    <p class="font-body text-body-md text-on-surface-variant">Одоогоор тест үүсгээгүй байна.</p>
+    <a href="create.html" class="px-6 h-12 rounded-full bg-primary-container text-on-primary-fixed font-label-lg text-label-lg flex items-center justify-center">Тест үүсгэх</a>
+  </div>
+</main>
+
+<nav class="fixed bottom-0 inset-x-0 z-50 pb-safe bg-surface-container-lowest/95 backdrop-blur-xl shadow-[0_-4px_24px_rgba(0,0,0,0.3)]">
+  <div class="flex justify-around items-center h-20 px-space-sm">
+    <a href="index.html" class="flex flex-col items-center justify-center gap-1 w-20 h-16 rounded-full text-on-surface-variant">
+      <div class="w-10 h-7 rounded-full flex items-center justify-center"><span class="material-symbols-outlined text-[22px]">auto_awesome</span></div>
+      <span class="font-label-sm text-label-sm font-semibold tracking-tight">Нүүр</span>
+    </a>
+    <a href="create.html" class="flex flex-col items-center justify-center gap-1 w-20 h-16 rounded-full text-on-surface-variant">
+      <div class="w-10 h-7 rounded-full flex items-center justify-center"><span class="material-symbols-outlined text-[22px]">favorite</span></div>
+      <span class="font-label-sm text-label-sm font-semibold tracking-tight">Үүсгэх</span>
+    </a>
+    <a href="mine.html" class="flex flex-col items-center justify-center gap-1 w-20 h-16 rounded-full text-primary-fixed font-bold">
+      <div class="w-10 h-7 rounded-full bg-primary-container/20 flex items-center justify-center"><span class="material-symbols-outlined text-[22px]">emoji_events</span></div>
+      <span class="font-label-sm text-label-sm font-semibold tracking-tight">Миний тестүүд</span>
+    </a>
+  </div>
+</nav>
+
+<script src="js/questions.js"></script>
+<script src="js/firebase-config.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database-compat.js"></script>
+<script src="js/db.js"></script>
+<script src="js/ui.js"></script>
+<script>
+  async function render() {
+    const mine = DB.myQuizzes();
+    const list = document.getElementById("mine-list");
+    const empty = document.getElementById("mine-empty");
+    if (!mine.length) {
+      empty.classList.remove("hidden");
+      empty.classList.add("flex");
+      return;
+    }
+    const cards = await Promise.all(
+      mine.map(async (m) => {
+        const full = await DB.getQuiz(m.code);
+        const attempts = full ? (full.attempts || []).length : 0;
+        const isOpen = full ? full.isOpen !== false : true;
+        return `<a href="manage.html?code=${m.code}&token=${m.token}" class="flex items-center gap-3 p-space-md rounded bg-surface-container shadow-sm active:scale-[0.99] transition-transform">
+          <div class="w-12 h-12 rounded-full bg-primary-fixed/15 flex items-center justify-center text-2xl shrink-0">${m.emoji || "💗"}</div>
+          <div class="flex flex-col min-w-0 flex-1">
+            <span class="font-label-lg text-label-lg text-on-surface truncate">${escapeHtml(m.title)}</span>
+            <span class="font-body text-body-sm text-on-surface-variant">${attempts} хариулсан · ${formatRelativeTime(m.createdAt)}${!isOpen ? " · 🔒 хаалттай" : ""}</span>
+          </div>
+          <span class="material-symbols-outlined text-[20px] text-on-surface-variant shrink-0">chevron_right</span>
+        </a>`;
+      })
+    );
+    list.innerHTML = cards.join("");
+  }
+  document.addEventListener("DOMContentLoaded", render);
+</script>
+</body>
+</html>

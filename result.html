@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="mn" class="dark">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover" />
+<title>Үр дүн 🏆 — Bestie</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%92%97%3C/text%3E%3C/svg%3E" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" rel="stylesheet" />
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="js/theme.js"></script>
+<style>
+  @layer base{
+    html,body{width:100vw;margin:0;padding:0;background-color:#0E0F1F;}
+    body{overscroll-behavior:none;font-family:"Nunito",sans-serif;}
+    .pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}
+    .pt-safe{padding-top:env(safe-area-inset-top,0px);}
+  }
+  ::-webkit-scrollbar{display:none;}
+  .screen{display:none;}
+  .screen.active{display:flex;}
+</style>
+</head>
+<body class="bg-surface font-body text-on-surface flex flex-col min-h-screen">
+
+<header class="fixed top-0 inset-x-0 z-50 bg-surface/90 backdrop-blur-xl pt-safe">
+  <div class="h-16 px-margin flex items-center justify-between gap-3">
+    <a href="index.html" class="w-11 h-11 flex items-center justify-center rounded-full bg-surface-container text-on-surface shrink-0">
+      <span class="material-symbols-outlined text-[20px]">home</span>
+    </a>
+    <span class="font-display text-label-lg text-label-lg text-on-surface">Үр дүн</span>
+    <div class="w-11 h-11 shrink-0"></div>
+  </div>
+</header>
+
+<main class="flex flex-col relative w-full pt-20 pb-28 bg-surface min-h-screen px-margin">
+
+  <section class="screen active flex-col items-center justify-center gap-3 pt-24 text-center" id="screen-loading">
+    <span class="text-4xl animate-bounce">🏆</span>
+    <p class="font-body text-body-md text-on-surface-variant">Онооноос тооцож байна...</p>
+  </section>
+
+  <section class="screen flex-col items-center justify-center gap-4 pt-24 text-center" id="screen-error">
+    <span class="text-5xl">😔</span>
+    <h1 class="font-display text-headline-md text-on-surface">Үр дүн олдсонгүй</h1>
+    <a href="index.html" class="mt-2 px-6 h-12 rounded-full bg-primary-container text-on-primary-fixed font-label-lg text-label-lg flex items-center justify-center">Нүүр хуудас руу</a>
+  </section>
+
+  <section class="screen flex-col gap-space-lg pt-2" id="screen-result">
+    <!-- Score hero -->
+    <div class="relative w-full rounded-lg bg-surface-container-low p-space-lg overflow-hidden shadow-card flex flex-col items-center text-center gap-2">
+      <div class="absolute -top-16 -right-16 w-56 h-56 rounded-full bg-primary-fixed/15 blur-3xl pointer-events-none"></div>
+      <img id="result-avatar" src="" alt="" class="w-20 h-20 rounded-full object-cover object-top shadow-md relative z-10 -mt-2" />
+      <p class="relative z-10 font-label-lg text-label-lg text-on-surface" id="result-nickname">Нэргүй найз</p>
+      <h1 class="relative z-10 font-display text-display-mobile text-on-surface" id="result-score">8/10</h1>
+      <p class="relative z-10 font-body text-body-lg text-primary-fixed font-extrabold" id="result-message">Маш сайн!</p>
+      <p class="relative z-10 font-body text-body-sm text-on-surface-variant" id="result-quiz-title">Тестийн нэр</p>
+      <img id="celebrate-gif" src="" alt="" class="relative z-10 mt-2 w-40 h-40 object-contain hidden" />
+    </div>
+
+    <!-- Answer breakdown -->
+    <div class="flex flex-col gap-2">
+      <h2 class="font-display text-headline-md text-on-surface px-1">Хариултын задаргаа</h2>
+      <div class="flex flex-col gap-2" id="breakdown-list"></div>
+    </div>
+
+    <!-- Ranking -->
+    <div class="flex flex-col gap-2" id="ranking-section">
+      <h2 class="font-display text-headline-md text-on-surface px-1">Bestie Ranking 🏆</h2>
+      <div class="flex flex-col gap-2" id="ranking-list"></div>
+    </div>
+
+    <!-- CTAs -->
+    <div class="flex flex-col gap-2.5 pt-2">
+      <button onclick="shareResult()" class="w-full h-14 rounded-full bg-surface-container-high text-on-surface font-label-lg text-label-lg flex items-center justify-center gap-2">
+        <span class="material-symbols-outlined text-[20px]">ios_share</span><span>Үр дүнгээ хуваалцах</span>
+      </button>
+      <a href="create.html" class="w-full h-14 rounded-full bg-primary-container text-on-primary-fixed font-label-lg text-label-lg flex items-center justify-center gap-2 shadow-glow">
+        <span class="material-symbols-outlined text-[20px]" style="font-variation-settings:'FILL' 1">add_circle</span>
+        <span>Өөрийнхөө тестийг үүсгэх</span>
+      </a>
+    </div>
+  </section>
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/canvas-confetti/1.9.4/confetti.js" integrity="sha512-C1P1Tk/O5Ex5drtP+pwLarHdzrkZgCIFmTpqDMP9Zft2gfeafYEQjgVO7h7726MrbK8/dt0qPrt6p+mbzJoXHA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="js/questions.js"></script>
+<script src="js/firebase-config.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database-compat.js"></script>
+<script src="js/db.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/result.js"></script>
+</body>
+</html>
