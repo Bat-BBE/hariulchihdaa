@@ -48,10 +48,21 @@ async function checkNotifications({ announceNew = false } = {}) {
       continue;
     }
     if (!quiz) continue;
-    const total = (quiz.attempts || []).length;
+    const isMatch = quiz.type === "match";
+    const total = isMatch ? (quiz.participantB ? 1 : 0) : (quiz.attempts || []).length;
     const seenCount = seen[m.code] || 0;
     if (total > seenCount) {
-      unseen.push({ code: m.code, token: m.token, title: quiz.title, emoji: quiz.emoji, newCount: total - seenCount, total });
+      unseen.push({
+        code: m.code,
+        token: m.token,
+        title: quiz.title,
+        emoji: quiz.emoji,
+        newCount: total - seenCount,
+        total,
+        type: isMatch ? "match" : "quiz",
+        partnerNickname: isMatch && quiz.participantB ? quiz.participantB.nickname : null,
+        matchScore: isMatch ? quiz.matchScore : null,
+      });
     }
   }
 
@@ -61,7 +72,13 @@ async function checkNotifications({ announceNew = false } = {}) {
 
   if (announceNew && newTotal > prevTotal) {
     const top = unseen[0];
-    if (top) showToast(`🎉 "${top.title}"-д шинэ хариулт ирлээ!`, { emoji: "🔔" });
+    if (top) {
+      if (top.type === "match") {
+        showToast(`💞 "${top.title}" дээр ${top.partnerNickname || "найз"} хариуллаа — ${top.matchScore}% таарлаа!`, { emoji: "💞" });
+      } else {
+        showToast(`🎉 "${top.title}"-д шинэ хариулт ирлээ!`, { emoji: "🔔" });
+      }
+    }
   }
 }
 
@@ -100,16 +117,21 @@ function openNotifSheet() {
     list.innerHTML = `<p class="font-body text-body-md text-on-surface-variant text-center py-6">Одоогоор шинэ хариулт алга 🙈</p>`;
   } else {
     list.innerHTML = _lastNotifList
-      .map(
-        (n) => `<a href="manage.html?code=${n.code}&token=${n.token}" class="flex items-center gap-3 p-space-md rounded bg-surface-container shadow-sm active:scale-[0.99] transition-transform">
+      .map((n) => {
+        const href = n.type === "match" ? `match.html?code=${n.code}&token=${n.token}` : `manage.html?code=${n.code}&token=${n.token}`;
+        const msg =
+          n.type === "match"
+            ? `💞 ${n.matchScore}% таарлаа — ${escapeHtml(n.partnerNickname || "найз")}тай`
+            : `${n.newCount} хүн шинээр хариуллаа 🎉`;
+        return `<a href="${href}" class="flex items-center gap-3 p-space-md rounded bg-surface-container shadow-sm active:scale-[0.99] transition-transform">
         <div class="w-11 h-11 rounded-full bg-primary-fixed/15 flex items-center justify-center text-xl shrink-0">${n.emoji || "💗"}</div>
         <div class="flex flex-col min-w-0 flex-1">
           <span class="font-label-lg text-label-lg text-on-surface truncate">${escapeHtml(n.title)}</span>
-          <span class="font-body text-body-sm text-primary-fixed font-bold">${n.newCount} хүн шинээр хариуллаа 🎉</span>
+          <span class="font-body text-body-sm text-primary-fixed font-bold">${msg}</span>
         </div>
         <span class="material-symbols-outlined text-[18px] text-on-surface-variant shrink-0">chevron_right</span>
-      </a>`
-      )
+      </a>`;
+      })
       .join("");
   }
   document.getElementById("notif-sheet").classList.remove("hidden");

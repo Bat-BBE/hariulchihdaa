@@ -19,23 +19,40 @@ const DB = (() => {
     if (fbReady) return;
     fbReady = true;
     try {
-      if (typeof BESTIE_FIREBASE_CONFIG === "undefined" || !BESTIE_FIREBASE_CONFIG.ENABLED) {
-        console.log("[Bestie] Firebase унтраалттай (ENABLED:false) — зөвхөн localStorage ашиглана.");
+      if (
+        typeof BESTIE_FIREBASE_CONFIG === "undefined" ||
+        !BESTIE_FIREBASE_CONFIG.ENABLED
+      ) {
+        console.log(
+          "[Bestie] Firebase унтраалттай (ENABLED:false) — зөвхөн localStorage ашиглана.",
+        );
         return;
       }
-      if (!BESTIE_FIREBASE_CONFIG.apiKey || !BESTIE_FIREBASE_CONFIG.databaseURL) {
-        console.log("[Bestie] Firebase config дутуу (apiKey/databaseURL алга) — localStorage ашиглана.");
+      if (
+        !BESTIE_FIREBASE_CONFIG.apiKey ||
+        !BESTIE_FIREBASE_CONFIG.databaseURL
+      ) {
+        console.log(
+          "[Bestie] Firebase config дутуу (apiKey/databaseURL алга) — localStorage ашиглана.",
+        );
         return;
       }
       if (typeof firebase === "undefined") {
-        console.warn("[Bestie] Firebase SDK ачаалагдаагүй байна (сүлжээ блоклогдсон байж магадгүй) — localStorage ашиглана.");
+        console.warn(
+          "[Bestie] Firebase SDK ачаалагдаагүй байна (сүлжээ блоклогдсон байж магадгүй) — localStorage ашиглана.",
+        );
         return;
       }
       fbApp = firebase.initializeApp(BESTIE_FIREBASE_CONFIG);
       fbDb = firebase.database();
-      console.log("[Bestie] Firebase холбогдлоо ✅ — тест бусад browser-оос ч харагдана.");
+      console.log(
+        "[Bestie] Firebase холбогдлоо ✅ — тест бусад browser-оос ч харагдана.",
+      );
     } catch (err) {
-      console.warn("[Bestie] Firebase ажиллахгүй байна, localStorage ашиглаж байна.", err);
+      console.warn(
+        "[Bestie] Firebase ажиллахгүй байна, localStorage ашиглаж байна.",
+        err,
+      );
       fbDb = null;
     }
   }
@@ -113,16 +130,13 @@ const DB = (() => {
   function genCode(len = 6) {
     const chars = "abcdefghjkmnpqrstuvwxyz23456789";
     let out = "";
-    for (let i = 0; i < len; i++) out += chars[Math.floor(Math.random() * chars.length)];
+    for (let i = 0; i < len; i++)
+      out += chars[Math.floor(Math.random() * chars.length)];
     return out;
   }
 
   function genToken() {
-    return (
-      genCode(8) +
-      genCode(8) +
-      Date.now().toString(36)
-    );
+    return genCode(8) + genCode(8) + Date.now().toString(36);
   }
 
   function saveQuizLocal(quiz) {
@@ -156,14 +170,22 @@ const DB = (() => {
       });
   }
 
-  async function createQuiz({ title, emoji, creatorName, creatorAvatar, questions, showRanking = true }) {
+  async function createQuiz({
+    title,
+    emoji,
+    creatorName,
+    creatorAvatar,
+    questions,
+    showRanking = true,
+  }) {
     const now = Date.now();
     const code = genCode();
     const quiz = {
       code,
       title: title && title.trim() ? title.trim() : "Намайг хэр сайн мэдэх вэ?",
       emoji: emoji || "💗",
-      creatorName: creatorName && creatorName.trim() ? creatorName.trim() : "Нэргүй найз",
+      creatorName:
+        creatorName && creatorName.trim() ? creatorName.trim() : "Нэргүй найз",
       creatorAvatar: creatorAvatar || "ohin1.png",
       ownerToken: genToken(),
       createdAt: now,
@@ -205,7 +227,11 @@ const DB = (() => {
       const q = quiz.questions.find((qq) => qq.id === a.questionId);
       const correct = q && q.correctOptionId === a.optionId;
       if (correct) score++;
-      return { questionId: a.questionId, optionId: a.optionId, correct: !!correct };
+      return {
+        questionId: a.questionId,
+        optionId: a.optionId,
+        correct: !!correct,
+      };
     });
     const attempt = {
       id: genCode(10),
@@ -226,7 +252,8 @@ const DB = (() => {
 
   async function closeQuiz(code, token, isOpen) {
     const quiz = await getQuiz(code);
-    if (!quiz || quiz.ownerToken !== token) throw new Error("Эрх хүрэлцэхгүй байна");
+    if (!quiz || quiz.ownerToken !== token)
+      throw new Error("Эрх хүрэлцэхгүй байна");
     quiz.isOpen = isOpen;
     saveQuizLocal(quiz);
     await pushRemote(quiz);
@@ -235,7 +262,8 @@ const DB = (() => {
 
   async function toggleRanking(code, token, showRanking) {
     const quiz = await getQuiz(code);
-    if (!quiz || quiz.ownerToken !== token) throw new Error("Эрх хүрэлцэхгүй байна");
+    if (!quiz || quiz.ownerToken !== token)
+      throw new Error("Эрх хүрэлцэхгүй байна");
     quiz.showRanking = showRanking;
     saveQuizLocal(quiz);
     await pushRemote(quiz);
@@ -244,18 +272,97 @@ const DB = (() => {
 
   async function deleteQuiz(code, token) {
     const quiz = await getQuiz(code);
-    if (!quiz || quiz.ownerToken !== token) throw new Error("Эрх хүрэлцэхгүй байна");
+    if (!quiz || quiz.ownerToken !== token)
+      throw new Error("Эрх хүрэлцэхгүй байна");
     const data = readLocal();
     delete data.quizzes[code];
     writeLocal(data);
     writeMine(readMine().filter((q) => q.code !== code));
     if (isRemoteEnabled()) {
-      await fbDb.ref("quizzes/" + code).remove().catch(() => {});
+      await fbDb
+        .ref("quizzes/" + code)
+        .remove()
+        .catch(() => {});
     }
   }
 
   function myQuizzes() {
     return readMine();
+  }
+
+  /* ---------- Match (Таарал) тест — хоёр хүн тус бүрийн тухай хариулж,
+     хариултууд хэр таарч байгааг харьцуулдаг горим. ---------- */
+  async function createMatchQuiz({
+    category,
+    creatorName,
+    creatorAvatar,
+    answers,
+  }) {
+    const now = Date.now();
+    const code = genCode();
+    const bankQuestions =
+      (typeof MATCH_QUESTION_BANK !== "undefined"
+        ? MATCH_QUESTION_BANK[category]
+        : []) || [];
+    const cat = (typeof MATCH_CATEGORIES !== "undefined"
+      ? MATCH_CATEGORIES.find((c) => c.id === category)
+      : null) || { label: "Тохирол асуулт", emoji: "💞" };
+    const name =
+      creatorName && creatorName.trim() ? creatorName.trim() : "Нэргүй найз";
+    const quiz = {
+      code,
+      type: "match",
+      category,
+      title: cat.label,
+      emoji: cat.emoji,
+      creatorName: name,
+      creatorAvatar: creatorAvatar || "ohin1.png",
+      ownerToken: genToken(),
+      createdAt: now,
+      expiresAt: now + EXPIRY_MS,
+      questions: bankQuestions.map((q) => ({
+        id: q.id,
+        emoji: q.emoji || "💭",
+        text: q.text,
+        options: q.options,
+      })),
+      participantA: {
+        nickname: name,
+        avatar: creatorAvatar || "ohin1.png",
+        answers,
+        completedAt: now,
+      },
+      participantB: null,
+    };
+    saveQuizLocal(quiz);
+    rememberMine(quiz);
+    await pushRemote(quiz);
+    return quiz;
+  }
+
+  async function submitMatchAnswer(code, { nickname, avatar, answers }) {
+    const quiz = await getQuiz(code);
+    if (!quiz || quiz.type !== "match") throw new Error("Тест олдсонгүй");
+    if (quiz.participantB)
+      throw new Error("Энэ тестийг аль хэдийн бөглөсөн байна");
+    let matchCount = 0;
+    quiz.questions.forEach((q) => {
+      const aAns = quiz.participantA.answers.find((a) => a.questionId === q.id);
+      const bAns = answers.find((a) => a.questionId === q.id);
+      if (aAns && bAns && aAns.optionId === bAns.optionId) matchCount++;
+    });
+    quiz.participantB = {
+      nickname: nickname && nickname.trim() ? nickname.trim() : "Нэргүй найз",
+      avatar: avatar || "ohin1.png",
+      answers,
+      completedAt: Date.now(),
+    };
+    quiz.matchScore = quiz.questions.length
+      ? Math.round((matchCount / quiz.questions.length) * 100)
+      : 0;
+    saveQuizLocal(quiz);
+    await pushRemote(quiz);
+    return quiz;
   }
 
   purgeExpired();
@@ -269,6 +376,8 @@ const DB = (() => {
     toggleRanking,
     deleteQuiz,
     myQuizzes,
+    createMatchQuiz,
+    submitMatchAnswer,
     genCode,
     EXPIRY_MS,
   };

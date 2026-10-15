@@ -24,17 +24,20 @@
 | 🏆 Үр дүн | `result.html?code=&attempt=` | Оноо, confetti, хариултын задаргаа, ranking |
 | 🔐 Удирдлага | `manage.html?code=&token=` | Эзэмшигчийн admin token-той хуудас — линк хаах, ranking нуух, устгах |
 | 📋 Миний тестүүд | `mine.html` | Энэ төхөөрөмж дээр үүсгэсэн бүх тестийн жагсаалт |
+| 💞 Таарал тест | `match.html?code=XXXXXX` | Хоёр хүн тус бүрдээ (зөв хариулт байхгүй) хариулж, хариултууд хэр таарч байгааг (%) харьцуулдаг горим — Найзын/Хайрын 2 категори |
 
 **Технологи:** Цэвэр HTML + [Tailwind CSS (Play CDN)](https://tailwindcss.com) + vanilla JavaScript. Build алхам (npm, bundler) шаардахгүй — шууд static file хост дээр ажиллана.
 
 ```
 js/
 ├── theme.js        — Tailwind-ийн дизайны токенууд (өнгө, хэмжээ, фонт)
-├── questions.js    — Асуултын сан (категориор)
+├── questions.js    — Асуултын сан (категориор) + Match горимын асуултууд (MATCH_QUESTION_BANK)
 ├── db.js           — Өгөгдлийн давхарга: localStorage + сонголтоор Firebase
 ├── ui.js           — Нийтлэг туслах функцууд (toast, share, avatar)
+├── identity.js     — Нэгдсэн nickname+avatar профайл (бүх хуудсанд нийтлэг)
+├── notifications.js — Эзэмшигчид шинэ хариулт/таарал ирсэн мэдэгдэл
 ├── firebase-config.js — Firebase тохиргоо (анхдагчаар унтраалттай)
-└── create.js / play.js / result.js / manage.js — Хуудас тус бүрийн логик
+└── create.js / play.js / result.js / manage.js / match.js — Хуудас тус бүрийн логик
 ```
 
 ### ▶️ Локал ажиллуулах

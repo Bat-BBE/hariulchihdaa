@@ -22,7 +22,7 @@
       rel="stylesheet"
     />
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="js/theme.js?v=3"></script>
+    <script src="js/theme.js?v=4"></script>
     <style>
       @layer base {
         html,
@@ -131,13 +131,13 @@
       </div>
     </nav>
 
-    <script src="js/questions.js?v=3"></script>
-    <script src="js/firebase-config.js?v=3"></script>
+    <script src="js/questions.js?v=4"></script>
+    <script src="js/firebase-config.js?v=4"></script>
     <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database-compat.js"></script>
-    <script src="js/db.js?v=3"></script>
-    <script src="js/ui.js?v=3"></script>
-    <script src="js/identity.js?v=3"></script>
+    <script src="js/db.js?v=4"></script>
+    <script src="js/ui.js?v=4"></script>
+    <script src="js/identity.js?v=4"></script>
     <script>
       mountIdentityWidget();
       async function render() {
@@ -152,6 +152,20 @@
         const cards = await Promise.all(
           mine.map(async (m) => {
             const full = await DB.getQuiz(m.code);
+            const isMatch = full && full.type === "match";
+            if (isMatch) {
+              const status = full.participantB
+                ? `${full.matchScore}% таарлаа 💞`
+                : "Soulmate хүлээж байна ⏳";
+              return `<a href="match.html?code=${m.code}&token=${m.token}" class="flex items-center gap-3 p-space-md rounded bg-surface-container shadow-sm active:scale-[0.99] transition-transform">
+          <div class="w-12 h-12 rounded-full bg-tertiary-container/40 flex items-center justify-center text-2xl shrink-0">${m.emoji || "💞"}</div>
+          <div class="flex flex-col min-w-0 flex-1">
+            <span class="font-label-lg text-label-lg text-on-surface truncate">${escapeHtml(m.title)}</span>
+            <span class="font-body text-body-sm text-on-surface-variant">${status} · ${formatRelativeTime(m.createdAt)}</span>
+          </div>
+          <span class="material-symbols-outlined text-[20px] text-on-surface-variant shrink-0">chevron_right</span>
+        </a>`;
+            }
             const attempts = full ? (full.attempts || []).length : 0;
             const isOpen = full ? full.isOpen !== false : true;
             return `<a href="manage.html?code=${m.code}&token=${m.token}" class="flex items-center gap-3 p-space-md rounded bg-surface-container shadow-sm active:scale-[0.99] transition-transform">

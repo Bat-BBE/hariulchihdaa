@@ -26,7 +26,7 @@
       rel="stylesheet"
     />
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="js/theme.js?v=3"></script>
+    <script src="js/theme.js?v=4"></script>
     <style>
       @layer base {
         html,
@@ -425,6 +425,59 @@
           </div>
         </div>
 
+        <!-- Match (Таарал) тест -->
+        <div class="reveal px-margin flex flex-col gap-3">
+          <div class="flex items-center gap-2">
+            <div
+              class="w-7 h-7 rounded-full bg-tertiary-container/50 flex items-center justify-center text-tertiary-fixed-dim"
+            >
+              <span class="material-symbols-outlined text-[18px]"
+                >favorite</span
+              >
+            </div>
+            <h2
+              class="font-display text-headline-md text-on-surface tracking-tight"
+            >
+              Тохирол асуулт 💞
+            </h2>
+          </div>
+          <p class="font-body text-body-sm text-on-surface-variant -mt-1">
+            Хоёулаа өөрийнхөөрөө хариулаад, хэр таарч байгаагаа мэд
+          </p>
+          <div class="grid grid-cols-2 gap-3">
+            <a
+              href="match.html?category=friend"
+              class="flex flex-col gap-2 p-space-md rounded-lg bg-surface-container shadow-sm active:scale-[0.97] transition-transform"
+            >
+              <span
+                class="w-11 h-11 rounded-full bg-secondary-container/50 flex items-center justify-center text-2xl"
+                >👯</span
+              >
+              <span class="font-label-lg text-label-lg text-on-surface"
+                >Найзын асуулт</span
+              >
+              <span class="font-body text-body-sm text-on-surface-variant"
+                >Та хоёр хэр төстэй бэ?</span
+              >
+            </a>
+            <a
+              href="match.html?category=love"
+              class="flex flex-col gap-2 p-space-md rounded-lg bg-surface-container shadow-sm active:scale-[0.97] transition-transform"
+            >
+              <span
+                class="w-11 h-11 rounded-full bg-tertiary-container/50 flex items-center justify-center text-2xl"
+                >💞</span
+              >
+              <span class="font-label-lg text-label-lg text-on-surface"
+                >Soulmate асуулт</span
+              >
+              <span class="font-body text-body-sm text-on-surface-variant"
+                >Хэр тохирч байна?</span
+              >
+            </a>
+          </div>
+        </div>
+
         <!-- Trending templates -->
         <div class="reveal px-margin flex flex-col gap-3">
           <div class="flex items-center justify-between">
@@ -537,14 +590,14 @@
       </div>
     </nav>
 
-    <script src="js/questions.js?v=3"></script>
-    <script src="js/firebase-config.js?v=3"></script>
+    <script src="js/questions.js?v=4"></script>
+    <script src="js/firebase-config.js?v=4"></script>
     <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database-compat.js"></script>
-    <script src="js/db.js?v=3"></script>
-    <script src="js/ui.js?v=3"></script>
-    <script src="js/identity.js?v=3"></script>
-    <script src="js/notifications.js?v=3"></script>
+    <script src="js/db.js?v=4"></script>
+    <script src="js/ui.js?v=4"></script>
+    <script src="js/identity.js?v=4"></script>
+    <script src="js/notifications.js?v=4"></script>
     <script>
       mountIdentityWidget();
       startNotifPolling();

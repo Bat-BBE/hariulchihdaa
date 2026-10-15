@@ -202,6 +202,200 @@ const QUESTION_BANK = [
   ]},
 ];
 
+/* ---------- Match (Таарал) тест — хоёр хүн тус бүрийн тухай хариулж,
+   хэр төстэй болохыг харьцуулдаг горим. Энд "зөв хариулт" гэж байхгүй. ---------- */
+const MATCH_CATEGORIES = [
+  { id: "friend", label: "Найзын тест", emoji: "👯", desc: "Та хоёр хэр төстэй найзууд бэ?" },
+  { id: "love", label: "Хайрын тест", emoji: "💞", desc: "Та хоёрын зүрх хэр таарч байна?" },
+];
+
+const MATCH_QUESTION_BANK = {
+  friend: [
+    { id: "mf1", emoji: "🎬", text: "Амралтын өдрөө юу хийхийг илүүд үздэг вэ?", options: [
+      { id: "a", emoji: "🛋️", text: "Гэртээ кино үзэх" },
+      { id: "b", emoji: "👯", text: "Найзуудтайгаа гадуур явах" },
+      { id: "c", emoji: "😴", text: "Унтаж амрах" },
+      { id: "d", emoji: "📚", text: "Шинэ зүйл сурах" },
+    ]},
+    { id: "mf2", emoji: "😮‍💨", text: "Стресстэй үедээ юу хийдэг вэ?", options: [
+      { id: "a", emoji: "🧍", text: "Ганцаараа байх" },
+      { id: "b", emoji: "📞", text: "Найздаа хонжоо тавих" },
+      { id: "c", emoji: "🍔", text: "Хооллох" },
+      { id: "d", emoji: "🏃", text: "Дасгал хийх" },
+    ]},
+    { id: "mf3", emoji: "🏖️", text: "Хамгийн дургуй амралтын хэлбэр?", options: [
+      { id: "a", emoji: "🏖️", text: "Далайн эрэг" },
+      { id: "b", emoji: "⛰️", text: "Уулархаг газар" },
+      { id: "c", emoji: "🏙️", text: "Хот руу аялах" },
+      { id: "d", emoji: "🛋️", text: "Гэртээ lazy day" },
+    ]},
+    { id: "mf4", emoji: "🌙", text: "Шөнийн эсвэл өглөөний хүн үү?", options: [
+      { id: "a", emoji: "🌙", text: "Шөнийн хүн" },
+      { id: "b", emoji: "🌅", text: "Өглөөний хүн" },
+      { id: "c", emoji: "⚖️", text: "Аль ч үед сайн" },
+      { id: "d", emoji: "😵", text: "Байнга нойрмог" },
+    ]},
+    { id: "mf5", emoji: "💬", text: "Групп чат дотор чи ямар үүрэгтэй вэ?", options: [
+      { id: "a", emoji: "🤣", text: "Мим илгээгч" },
+      { id: "b", emoji: "📅", text: "Төлөвлөгч" },
+      { id: "c", emoji: "👂", text: "Чимээгүй ажиглагч" },
+      { id: "d", emoji: "🧩", text: "Асуудал шийдвэрлэгч" },
+    ]},
+    { id: "mf6", emoji: "🎤", text: "Хамгийн дургуй зугаа цэнгэл?", options: [
+      { id: "a", emoji: "🎬", text: "Кино театр" },
+      { id: "b", emoji: "🎤", text: "Караоке" },
+      { id: "c", emoji: "🎮", text: "Тоглоомын газар" },
+      { id: "d", emoji: "☕", text: "Кафе" },
+    ]},
+    { id: "mf7", emoji: "💸", text: "Мөнгөөрөө юунд зарцуулдаг вэ?", options: [
+      { id: "a", emoji: "👗", text: "Хувцас, гоо сайхан" },
+      { id: "b", emoji: "🍽️", text: "Хоол, кафе" },
+      { id: "c", emoji: "✈️", text: "Аялал" },
+      { id: "d", emoji: "💰", text: "Хадгаламж" },
+    ]},
+    { id: "mf8", emoji: "🧩", text: "Асуудал гарвал хэрхэн ханддаг вэ?", options: [
+      { id: "a", emoji: "🗣️", text: "Шууд ярьж шийднэ" },
+      { id: "b", emoji: "⏳", text: "Цаг хугацаа өгнө" },
+      { id: "c", emoji: "👥", text: "Бусдаасаа зөвлөгөө авна" },
+      { id: "d", emoji: "🙈", text: "Тойрч гарахыг хичээнэ" },
+    ]},
+    { id: "mf9", emoji: "🍁", text: "Хамгийн дургуй улирал?", options: [
+      { id: "a", emoji: "☀️", text: "Зун" },
+      { id: "b", emoji: "🍁", text: "Намар" },
+      { id: "c", emoji: "❄️", text: "Өвөл" },
+      { id: "d", emoji: "🌸", text: "Хавар" },
+    ]},
+    { id: "mf10", emoji: "🛍️", text: "Нэг өдрийг хамт өнгөрөөх бол юу хийх дуртай вэ?", options: [
+      { id: "a", emoji: "🛍️", text: "Shopping" },
+      { id: "b", emoji: "🏋️", text: "Спорт заал" },
+      { id: "c", emoji: "📖", text: "Ном дэлгүүр" },
+      { id: "d", emoji: "🌳", text: "Байгаль, парк" },
+    ]},
+    { id: "mf11", emoji: "📆", text: "Найз нартайгаа хэр олон удаа уулздаг вэ?", options: [
+      { id: "a", emoji: "📅", text: "Өдөр бүр" },
+      { id: "b", emoji: "🗓️", text: "Долоо хоногт хэд хэд" },
+      { id: "c", emoji: "📆", text: "Сард хэд хэд" },
+      { id: "d", emoji: "🌫️", text: "Ховорхон" },
+    ]},
+    { id: "mf12", emoji: "🧳", text: "Аялахдаа ямар төлөвлөгөөтэй явдаг вэ?", options: [
+      { id: "a", emoji: "📋", text: "Бүх зүйлийг нарийн төлөвлөнө" },
+      { id: "b", emoji: "🌊", text: "Урсгалаар явна" },
+      { id: "c", emoji: "🗒️", text: "Хагас төлөвлөнө" },
+      { id: "d", emoji: "🤝", text: "Бусдад даатгана" },
+    ]},
+    { id: "mf13", emoji: "📱", text: "Хамгийн их цаг зарцуулдаг платформ?", options: [
+      { id: "a", emoji: "📸", text: "Instagram" },
+      { id: "b", emoji: "🎵", text: "TikTok" },
+      { id: "c", emoji: "📺", text: "YouTube" },
+      { id: "d", emoji: "💬", text: "Бусад чат апп" },
+    ]},
+    { id: "mf14", emoji: "☕", text: "Өглөө сэрэнгүүтээ юу уудаг вэ?", options: [
+      { id: "a", emoji: "☕", text: "Кофе" },
+      { id: "b", emoji: "🍵", text: "Цай" },
+      { id: "c", emoji: "💧", text: "Ус" },
+      { id: "d", emoji: "🚫", text: "Юу ч уудаггүй" },
+    ]},
+    { id: "mf15", emoji: "😤", text: "Чиний хамгийн жижиг бухимдал юу вэ?", options: [
+      { id: "a", emoji: "⏰", text: "Хоцрох хүмүүс" },
+      { id: "b", emoji: "🔊", text: "Чимээ шуугиантай орчин" },
+      { id: "c", emoji: "📵", text: "Хариу өгөхгүй байх" },
+      { id: "d", emoji: "🔄", text: "Төлөвлөгөө өөрчлөгдөх" },
+    ]},
+  ],
+  love: [
+    { id: "ml1", emoji: "💌", text: "Love language чинь юу вэ?", options: [
+      { id: "a", emoji: "🗣️", text: "Үг хэллэг" },
+      { id: "b", emoji: "⏰", text: "Цаг зав" },
+      { id: "c", emoji: "🎁", text: "Бэлэг" },
+      { id: "d", emoji: "🤗", text: "Тэврэлт, дэмжлэг" },
+    ]},
+    { id: "ml2", emoji: "🍷", text: "Анхны уулзалтдаа юу хийхийг хүсдэг вэ?", options: [
+      { id: "a", emoji: "🎬", text: "Кино театр" },
+      { id: "b", emoji: "🍽️", text: "Романтик зоогийн газар" },
+      { id: "c", emoji: "🌳", text: "Гадаа алхах" },
+      { id: "d", emoji: "🎮", text: "Тоглоомын газар" },
+    ]},
+    { id: "ml3", emoji: "🧩", text: "Хайртай хүнтэйгээ зөрчилдвөл яах вэ?", options: [
+      { id: "a", emoji: "🗣️", text: "Шууд ярьж шийднэ" },
+      { id: "b", emoji: "⏳", text: "Цаг аван тайвширна" },
+      { id: "c", emoji: "✍️", text: "Бичгээр илэрхийлнэ" },
+      { id: "d", emoji: "🤝", text: "Уучлалт гуйж эвлэрнэ" },
+    ]},
+    { id: "ml4", emoji: "🔮", text: "5 жилийн дараа харилцаагаа хаана харж байна вэ?", options: [
+      { id: "a", emoji: "💍", text: "Гэрлэсэн" },
+      { id: "b", emoji: "🏠", text: "Хамтдаа амьдардаг" },
+      { id: "c", emoji: "🤷", text: "Хараахан мэдэхгүй" },
+      { id: "d", emoji: "🌍", text: "Хамтдаа дэлхий тойрсон" },
+    ]},
+    { id: "ml5", emoji: "✨", text: "Романтик гэдэг чиний хувьд юу вэ?", options: [
+      { id: "a", emoji: "🎁", text: "Гэнэтийн бэлэг" },
+      { id: "b", emoji: "💌", text: "Урт захидал, мессеж" },
+      { id: "c", emoji: "⏰", text: "Хамтдаа цаг өнгөрөөх" },
+      { id: "d", emoji: "🌷", text: "Жижиг анхаарал, халамж" },
+    ]},
+    { id: "ml6", emoji: "❤️", text: "Хайртай хүндээ хамгийн их юу чухал гэж бодогддог вэ?", options: [
+      { id: "a", emoji: "🤝", text: "Итгэлцэл" },
+      { id: "b", emoji: "😂", text: "Хошигнол, инээд" },
+      { id: "c", emoji: "🫶", text: "Дэмжлэг" },
+      { id: "d", emoji: "🧭", text: "Ижил үнэт зүйлс" },
+    ]},
+    { id: "ml7", emoji: "🔑", text: "Ойр дотно байдлыг (closeness) хэрхэн тодорхойлдог вэ?", options: [
+      { id: "a", emoji: "📖", text: "Бүх зүйлээ хуваалцах" },
+      { id: "b", emoji: "🧘", text: "Хувийн зай хадгалах" },
+      { id: "c", emoji: "📞", text: "Өдөр бүр холбогдох" },
+      { id: "d", emoji: "⏳", text: "Чанартай цаг хамт өнгөрөөх" },
+    ]},
+    { id: "ml8", emoji: "🧭", text: "Асуудал гарахад эхлээд юу хийдэг вэ?", options: [
+      { id: "a", emoji: "🗣️", text: "Шууд ярина" },
+      { id: "b", emoji: "⏳", text: "Цаг хугацаа авна" },
+      { id: "c", emoji: "👥", text: "Найзаасаа зөвлөгөө авна" },
+      { id: "d", emoji: "✍️", text: "Бичгээр илэрхийлнэ" },
+    ]},
+    { id: "ml9", emoji: "🌟", text: "Хань дээр хамгийн их юуг эрхэмлэдэг вэ?", options: [
+      { id: "a", emoji: "😄", text: "Хөгжилтэй зан чанар" },
+      { id: "b", emoji: "🧱", text: "Тогтвортой байдал" },
+      { id: "c", emoji: "🧳", text: "Адал явдал хайрлагч" },
+      { id: "d", emoji: "🧠", text: "Гүн ухаалаг ярилцагч" },
+    ]},
+    { id: "ml10", emoji: "💍", text: "Гэрлэлтийн тухай бодол?", options: [
+      { id: "a", emoji: "⚡", text: "Эрт гэрлэхийг хүсдэг" },
+      { id: "b", emoji: "🌱", text: "Яарахгүй" },
+      { id: "c", emoji: "🤷", text: "Гэрлэхгүй байж ч болно" },
+      { id: "d", emoji: "💭", text: "Хараахан бодоогүй" },
+    ]},
+    { id: "ml11", emoji: "🍳", text: "Хамтдаа цаг өнгөрөөх дуртай арга?", options: [
+      { id: "a", emoji: "🛋️", text: "Гэртээ кино үзэх" },
+      { id: "b", emoji: "🍳", text: "Хоол хийх" },
+      { id: "c", emoji: "✈️", text: "Аялах" },
+      { id: "d", emoji: "🏃", text: "Спорт хийх" },
+    ]},
+    { id: "ml12", emoji: "😒", text: "Атаархал мэдрэх үед яах вэ?", options: [
+      { id: "a", emoji: "🗣️", text: "Шууд хэлнэ" },
+      { id: "b", emoji: "🤐", text: "Дотроо нуун дарагдуулна" },
+      { id: "c", emoji: "😏", text: "Хошигнож хэлнэ" },
+      { id: "d", emoji: "⏳", text: "Цаг гарган ярилцана" },
+    ]},
+    { id: "ml13", emoji: "⏳", text: "Харилцаандаа хамгийн их юунд цаг гаргадаг вэ?", options: [
+      { id: "a", emoji: "🗣️", text: "Харилцан яриа" },
+      { id: "b", emoji: "⭐", text: "Хамт цагийн чанар" },
+      { id: "c", emoji: "🤗", text: "Ойр дотно байдал" },
+      { id: "d", emoji: "🎯", text: "Хамтарсан зорилго" },
+    ]},
+    { id: "ml14", emoji: "🎁", text: "Ямар төрлийн сюрприз таалагддаг вэ?", options: [
+      { id: "a", emoji: "🌷", text: "Жижиг өдөр тутмын" },
+      { id: "b", emoji: "🎉", text: "Том гэнэтийн" },
+      { id: "c", emoji: "✋", text: "Гар хийц бэлэг" },
+      { id: "d", emoji: "⏳", text: "Хамтдаа цаг" },
+    ]},
+    { id: "ml15", emoji: "💭", text: "Хайр дурлалд юу гол гэж боддог вэ?", options: [
+      { id: "a", emoji: "✨", text: "Таталцал" },
+      { id: "b", emoji: "🤝", text: "Нөхөрлөл" },
+      { id: "c", emoji: "🌱", text: "Хамтын өсөлт" },
+      { id: "d", emoji: "🧘", text: "Тайван байдал" },
+    ]},
+  ],
+};
+
 function getQuestionsByIds(ids) {
   const map = Object.fromEntries(QUESTION_BANK.map((q) => [q.id, q]));
   return ids.map((id) => map[id]).filter(Boolean);

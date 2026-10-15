@@ -1,0 +1,530 @@
+<!doctype html>
+<html lang="mn" class="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover"
+    />
+    <title>Тохирол асуулт 💞 — Bestie</title>
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%92%97%3C/text%3E%3C/svg%3E"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="js/theme.js?v=4"></script>
+    <style>
+      @layer base {
+        html,
+        body {
+          width: 100vw;
+          margin: 0;
+          padding: 0;
+          background-color: #0e0f1f;
+        }
+        body {
+          overscroll-behavior: none;
+          font-family: "Nunito", sans-serif;
+        }
+        .pb-safe {
+          padding-bottom: env(safe-area-inset-bottom, 0px);
+        }
+        .pt-safe {
+          padding-top: env(safe-area-inset-top, 0px);
+        }
+      }
+      ::-webkit-scrollbar {
+        display: none;
+      }
+      .screen {
+        display: none;
+      }
+      .screen.active {
+        display: flex;
+      }
+      @keyframes pop {
+        0% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.03);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+      .pop {
+        animation: pop 0.22s ease;
+      }
+      @keyframes fadeUp {
+        from {
+          opacity: 0;
+          transform: translateY(14px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .fade-up {
+        animation: fadeUp 0.6s cubic-bezier(0.2, 0.7, 0.3, 1) both;
+      }
+      @keyframes scorePop {
+        0% {
+          transform: scale(1);
+        }
+        45% {
+          transform: scale(1.18);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+      .score-pop {
+        animation: scorePop 0.42s cubic-bezier(0.3, 1.5, 0.4, 1) both;
+      }
+      .avatar-btn.is-active .avatar-check,
+      .m-avatar-btn.is-active .avatar-check {
+        display: flex;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .fade-up,
+        .score-pop {
+          animation: none !important;
+        }
+      }
+    </style>
+  </head>
+  <body class="bg-surface font-body text-on-surface flex flex-col min-h-screen">
+    <header
+      class="fixed top-0 inset-x-0 z-50 bg-surface/90 backdrop-blur-xl pt-safe"
+    >
+      <div class="h-16 px-margin flex items-center justify-between gap-3">
+        <button
+          onclick="goBackOrHome()"
+          class="w-11 h-11 flex items-center justify-center rounded-full bg-surface-container text-on-surface shrink-0"
+        >
+          <span class="material-symbols-outlined text-[20px]"
+            >arrow_back_ios_new</span
+          >
+        </button>
+        <div class="flex flex-col items-center flex-1 min-w-0">
+          <span
+            class="font-display text-label-lg text-label-lg text-on-surface truncate"
+            id="header-title"
+            >Тохирол асуулт</span
+          >
+        </div>
+        <div
+          class="px-3 py-1 rounded-full bg-surface-container-high text-primary-fixed font-label-md text-label-md shrink-0 hidden"
+          id="qcounter"
+        >
+          1/10
+        </div>
+      </div>
+      <div class="h-1 w-full bg-surface-container-high">
+        <div
+          id="progress-bar"
+          class="h-full bg-primary-fixed transition-all duration-300"
+          style="width: 0%"
+        ></div>
+      </div>
+    </header>
+
+    <main
+      class="flex flex-col relative w-full pt-20 pb-10 bg-surface min-h-screen px-margin"
+    >
+      <!-- Loading -->
+      <section
+        class="screen active flex-col items-center justify-center gap-3 pt-24 text-center"
+        id="screen-loading"
+      >
+        <span class="text-4xl animate-bounce">💞</span>
+        <p class="font-body text-body-md text-on-surface-variant">
+          Ачаалж байна...
+        </p>
+      </section>
+
+      <!-- Error -->
+      <section
+        class="screen flex-col items-center justify-center gap-4 pt-24 text-center"
+        id="screen-error"
+      >
+        <span class="text-5xl">😔</span>
+        <h1
+          class="font-display text-headline-md text-on-surface"
+          id="error-title"
+        >
+          асуулт олдсонгүй
+        </h1>
+        <p
+          class="font-body text-body-md text-on-surface-variant"
+          id="error-text"
+        >
+          Линк буруу эсвэл асуулт устгагдсан байж магадгүй.
+        </p>
+        <a
+          href="index.html"
+          class="mt-2 px-6 h-12 rounded-full bg-primary-container text-on-primary-fixed font-label-lg text-label-lg flex items-center justify-center"
+          >Нүүр хуудас руу</a
+        >
+      </section>
+
+      <!-- Already completed by someone else -->
+      <section
+        class="screen flex-col items-center justify-center gap-4 pt-20 text-center"
+        id="screen-full"
+      >
+        <span class="text-5xl">🙈</span>
+        <h1
+          class="font-display text-headline-md text-on-surface"
+          id="full-title"
+        >
+          асуулт дууссан байна
+        </h1>
+        <p
+          class="font-body text-body-md text-on-surface-variant max-w-xs"
+          id="full-text"
+        >
+          Тохирол асуулт зөвхөн хоёр хүний хооронд ажилладаг.
+        </p>
+        <a
+          href="index.html"
+          class="mt-1 w-full max-w-xs h-13 rounded-full bg-primary-container text-on-primary-fixed font-label-lg text-label-lg flex items-center justify-center"
+          >Нүүр хуудас руу</a
+        >
+      </section>
+
+      <!-- Step: choose category -->
+      <section class="screen flex-col gap-space-lg pt-4" id="screen-category">
+        <div class="flex flex-col gap-1.5 text-center">
+          <span class="text-4xl">💞</span>
+          <h1 class="font-display text-headline-lg text-on-surface">
+            Ямар төрлийн асуулт хийх вэ?
+          </h1>
+          <p class="font-body text-body-md text-on-surface-variant">
+            Найзтайгаа эсвэл soulmate хэр тохирч байгаагаа шалгаарай
+          </p>
+        </div>
+        <div class="flex flex-col gap-3" id="category-grid"></div>
+      </section>
+
+      <!-- Step: identity (both A & B use this) -->
+      <section class="screen flex-col gap-space-lg pt-4" id="screen-identity">
+        <div class="fade-up flex flex-col items-center gap-2 text-center">
+          <div
+            class="w-16 h-16 rounded-full bg-primary-fixed/15 flex items-center justify-center text-3xl"
+            id="identity-cat-emoji"
+          >
+            💞
+          </div>
+          <h1
+            class="font-display text-headline-lg text-on-surface"
+            id="identity-cat-title"
+          >
+            Тохирол асуулт
+          </h1>
+          <p
+            class="font-body text-body-md text-on-surface-variant"
+            id="identity-cat-sub"
+          >
+            Эхлээд өөрөө хариулаарай.
+          </p>
+        </div>
+        <div class="fade-up flex flex-col gap-2" style="animation-delay: 0.08s">
+          <label
+            class="font-label-md text-label-md text-on-surface-variant flex items-center gap-1.5"
+          >
+            <span class="material-symbols-outlined text-[16px]">badge</span
+            >Нэрээ оруулаарай <span class="text-error">*</span>
+          </label>
+          <input
+            id="m-nickname"
+            maxlength="24"
+            required
+            placeholder="Жишээ: Ану"
+            class="w-full h-14 px-5 rounded bg-surface-container text-on-surface font-body text-body-lg placeholder:text-on-surface-variant/60 outline-none focus:ring-2 focus:ring-primary-fixed transition-shadow"
+          />
+          <span
+            class="hidden font-body text-body-sm text-error px-1"
+            id="m-nickname-error"
+            >Нэрээ оруулна уу 🙏</span
+          >
+        </div>
+        <div class="fade-up flex flex-col gap-2" style="animation-delay: 0.14s">
+          <label
+            class="font-label-md text-label-md text-on-surface-variant flex items-center gap-1.5"
+          >
+            <span class="material-symbols-outlined text-[16px]">face</span
+            >Аватар сонгох
+          </label>
+          <div
+            class="flex gap-2.5 overflow-x-auto pb-1"
+            id="m-avatar-picker"
+          ></div>
+        </div>
+        <button
+          onclick="startMatchQuestions()"
+          class="fade-up w-full h-14 rounded-full bg-primary-container text-on-primary-fixed font-label-lg text-label-lg flex items-center justify-center gap-2 shadow-glow active:scale-[0.97] transition-transform"
+          style="animation-delay: 0.2s"
+        >
+          <span
+            class="material-symbols-outlined text-[20px]"
+            style="font-variation-settings: &quot;FILL&quot; 1"
+            >play_arrow</span
+          >
+          <span>Эхлэх</span>
+        </button>
+      </section>
+
+      <!-- Question -->
+      <section class="screen flex-col gap-space-md pt-4" id="screen-question">
+        <div
+          class="relative w-full bg-surface-container rounded-lg p-space-lg shadow-xl overflow-hidden"
+        >
+          <div class="relative z-10 flex items-center justify-between mb-2">
+            <span
+              class="px-3 py-1 rounded-full bg-surface-container-high text-secondary-fixed-dim font-label-sm text-label-sm uppercase tracking-wider flex items-center gap-1"
+              id="mq-emoji-pill"
+              >💭</span
+            >
+            <span
+              class="font-label-sm text-label-sm text-on-surface-variant flex items-center gap-1"
+            >
+              <span
+                class="material-symbols-outlined text-[15px] text-tertiary-fixed-dim"
+                style="font-variation-settings: &quot;FILL&quot; 1"
+                >favorite</span
+              >
+              <span>Өөрийнхөөрөө хариулаарай</span>
+            </span>
+          </div>
+          <h2
+            class="relative z-10 font-display text-headline-lg text-on-surface leading-snug"
+            id="mq-text"
+          >
+            ...
+          </h2>
+        </div>
+        <div class="flex flex-col gap-space-sm" id="mq-options"></div>
+        <button
+          onclick="prevMatchQuestion()"
+          id="mq-back"
+          class="self-start mt-1 flex items-center gap-1 px-4 py-2 rounded-full bg-surface-container text-on-surface-variant text-label-sm text-label-sm font-bold"
+        >
+          <span class="material-symbols-outlined text-[16px]">arrow_back</span
+          ><span>Буцах</span>
+        </button>
+      </section>
+
+      <!-- Submitting -->
+      <section
+        class="screen flex-col items-center justify-center gap-3 pt-24 text-center"
+        id="screen-submitting"
+      >
+        <span class="text-4xl animate-spin">🌀</span>
+        <p class="font-body text-body-md text-on-surface-variant">
+          Тооцож байна...
+        </p>
+      </section>
+
+      <!-- Share (after A finishes, waiting for B) -->
+      <section
+        class="screen flex-col gap-space-lg pt-4 items-center text-center"
+        id="screen-share"
+      >
+        <div
+          class="w-24 h-24 rounded-full bg-primary-fixed/15 flex items-center justify-center text-5xl"
+          id="share-emoji"
+        >
+          💞
+        </div>
+        <div class="flex flex-col gap-1">
+          <h1
+            class="font-display text-headline-lg text-on-surface"
+            id="share-title"
+          >
+            Тохирол асуулт
+          </h1>
+          <p class="font-body text-body-md text-on-surface-variant">
+            Линкээ найздаа/хайртандаа илгээгээд, тэд хариулахад хэр таарч
+            байгаагаа мэдэх болно.
+          </p>
+        </div>
+        <div
+          class="w-full p-space-md rounded bg-surface-container flex items-center justify-between gap-2"
+        >
+          <span
+            id="m-share-url"
+            class="font-body text-body-sm text-on-surface truncate text-left flex-1 min-w-0"
+          ></span>
+          <button
+            onclick="copyMatchShareUrl()"
+            class="shrink-0 w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center"
+          >
+            <span class="material-symbols-outlined text-[18px]"
+              >content_copy</span
+            >
+          </button>
+        </div>
+        <button
+          onclick="doMatchShare()"
+          class="w-full h-14 rounded-full bg-primary-container text-on-primary-fixed font-label-lg text-label-lg flex items-center justify-center gap-2 shadow-glow active:scale-[0.98] transition-transform"
+        >
+          <span class="material-symbols-outlined text-[20px]">ios_share</span
+          ><span>Илгээх</span>
+        </button>
+        <a
+          href="index.html"
+          class="font-label-md text-label-md text-on-surface-variant underline underline-offset-2"
+          >Нүүр хуудас руу буцах</a
+        >
+      </section>
+
+      <!-- Result -->
+      <section class="screen flex-col gap-space-lg pt-2" id="screen-result">
+        <div
+          class="relative w-full rounded-lg bg-surface-container-low p-space-lg overflow-hidden shadow-card flex flex-col items-center text-center gap-2"
+        >
+          <div
+            class="absolute -top-20 -right-20 w-56 h-56 rounded-full bg-primary-fixed/15 blur-3xl pointer-events-none"
+          ></div>
+          <div
+            class="absolute -bottom-16 -left-16 w-48 h-48 rounded-full bg-secondary-container/25 blur-3xl pointer-events-none"
+          ></div>
+
+          <span
+            class="relative z-10 px-3 py-1 rounded-full bg-surface-container text-on-surface-variant text-label-sm font-label-sm"
+            id="result-title"
+            >Тохирол асуулт</span
+          >
+
+          <div class="relative z-10 mt-1 flex items-center gap-3">
+            <div class="flex flex-col items-center gap-1">
+              <img
+                id="result-a-avatar"
+                src=""
+                alt=""
+                class="w-14 h-14 rounded-full object-cover object-top shadow-md ring-2 ring-surface-container-low"
+              />
+              <span
+                class="font-label-sm text-label-sm text-on-surface max-w-[72px] truncate"
+                id="result-a-name"
+              ></span>
+            </div>
+
+            <div class="w-[108px] h-[108px] shrink-0 relative">
+              <svg
+                viewBox="0 0 120 120"
+                width="108"
+                height="108"
+                class="-rotate-90"
+              >
+                <circle
+                  cx="60"
+                  cy="60"
+                  r="50"
+                  fill="none"
+                  stroke="rgba(255,255,255,0.1)"
+                  stroke-width="10"
+                />
+                <circle
+                  id="result-ring-fill"
+                  cx="60"
+                  cy="60"
+                  r="50"
+                  fill="none"
+                  stroke="#D8EE48"
+                  stroke-width="10"
+                  stroke-linecap="round"
+                  stroke-dasharray="314.16"
+                  stroke-dashoffset="314.16"
+                  style="
+                    transition: stroke-dashoffset 1s
+                      cubic-bezier(0.2, 0.8, 0.2, 1);
+                  "
+                />
+              </svg>
+              <div
+                class="absolute inset-0 flex flex-col items-center justify-center"
+              >
+                <span
+                  class="font-display text-headline-md text-on-surface score-pop"
+                  id="result-pct-number"
+                  >0%</span
+                >
+              </div>
+            </div>
+
+            <div class="flex flex-col items-center gap-1">
+              <img
+                id="result-b-avatar"
+                src=""
+                alt=""
+                class="w-14 h-14 rounded-full object-cover object-top shadow-md ring-2 ring-surface-container-low"
+              />
+              <span
+                class="font-label-sm text-label-sm text-on-surface max-w-[72px] truncate"
+                id="result-b-name"
+              ></span>
+            </div>
+          </div>
+
+          <p
+            class="relative z-10 font-body text-body-md text-primary-fixed font-extrabold mt-1"
+            id="result-message"
+          >
+            Таарлаа!
+          </p>
+        </div>
+
+        <div class="flex flex-col gap-2">
+          <h2 class="font-display text-headline-md text-on-surface px-1">
+            Хариултын задаргаа
+          </h2>
+          <div class="flex flex-col gap-2" id="result-breakdown"></div>
+        </div>
+
+        <div class="flex flex-col gap-2.5 pt-2">
+          <button
+            onclick="shareMatchResult()"
+            class="w-full h-14 rounded-full bg-surface-container-high text-on-surface font-label-lg text-label-lg flex items-center justify-center gap-2"
+          >
+            <span class="material-symbols-outlined text-[20px]">ios_share</span
+            ><span>Үр дүнгээ хуваалцах</span>
+          </button>
+          <a
+            href="match.html"
+            class="w-full h-14 rounded-full bg-primary-container text-on-primary-fixed font-label-lg text-label-lg flex items-center justify-center gap-2 shadow-glow"
+          >
+            <span
+              class="material-symbols-outlined text-[20px]"
+              style="font-variation-settings: &quot;FILL&quot; 1"
+              >add_circle</span
+            >
+            <span>Шинэ тохирол асуулт үүсгэх</span>
+          </a>
+        </div>
+      </section>
+    </main>
+
+    <script src="js/questions.js?v=4"></script>
+    <script src="js/firebase-config.js?v=4"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database-compat.js"></script>
+    <script src="js/db.js?v=4"></script>
+    <script src="js/ui.js?v=4"></script>
+    <script src="js/identity.js?v=4"></script>
+    <script src="js/match.js?v=4"></script>
+  </body>
+</html>
